@@ -1,38 +1,112 @@
- <app-map/>
-<form (ngSubmit)="submit()">
-  <input
-    [(ngModel)]="name"
-    name="name"
-    placeholder="Nome da propriedade"
-    required
-  />
-  <input
-    [(ngModel)]="location"
-    name="location"
-    placeholder="Localização"
-    required
-  />
-  <input
-    [(ngModel)]="size"
-    name="size"
-    type="number"
-    placeholder="Tamanho (ha)"
-    required
-  />
-  <input
-    [(ngModel)]="userId"
-    name="userId"
-    placeholder="ID do usuário"
-    required
-  />
-
-  <button type="button" (click)="toggleMarking()">
-    {{ isMarkingActive ? 'Desativar marcação' : 'Ativar marcação' }}
+<form [formGroup]="propertyForm" (ngSubmit)="onSubmit()" class="property-form">
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="propertyForm.invalid"
+  >
+    Salvar
   </button>
-  <button type="button" (click)="clearPoints()">Limpar pontos</button>
+  <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="Gerais">
+      <div class="tab">
+        <mat-form-field appearance="fill">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="name" required />
+        </mat-form-field>
 
-  <div #map style="height: 400px; margin: 20px 0;"></div>
+        <mat-form-field appearance="fill">
+          <mat-label>Localização</mat-label>
+          <input matInput formControlName="location" required />
+        </mat-form-field>
 
-  <button type="submit">Salvar Propriedade</button>
+        <mat-form-field appearance="fill">
+          <mat-label>Tamanho (ha)</mat-label>
+          <input matInput type="number" formControlName="size" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Dono (ownerId)</mat-label>
+          <input matInput formControlName="ownerId" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option *ngFor="let status of statusOptions" [value]="status">
+              {{ status }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Second">
+      <div class="tab">Content 2</div>
+    </mat-tab>
+    <mat-tab label="MAPA">
+      <div class="tab">
+        <app-map #mapComp (returnPoints)="onMapPointsReturn($event)" />
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </form>
- 
+<!-- <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()" class="property-form">
+  <mat-form-field appearance="fill">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="name" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Localização</mat-label>
+    <input matInput formControlName="location" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Tamanho (ha)</mat-label>
+    <input matInput type="number" formControlName="size" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Pontos do Mapa (JSON)</mat-label>
+    <textarea matInput formControlName="mapPoints" required rows="4"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Dono (ownerId)</mat-label>
+    <input matInput formControlName="ownerId" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Usuário (userId)</mat-label>
+    <input matInput formControlName="userId" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option *ngFor="let status of statusOptions" [value]="status">
+        {{ status }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Descrição</mat-label>
+    <textarea matInput formControlName="description" rows="3"></textarea>
+  </mat-form-field>
+<app-map  (returnPoints)="onMapPointsReturn($event)"/>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="propertyForm.invalid"
+  >
+    Salvar
+  </button>
+</form> -->
