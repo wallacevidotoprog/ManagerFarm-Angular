@@ -1,0 +1,38 @@
+ <app-map/>
+<form (ngSubmit)="submit()">
+  <input
+    [(ngModel)]="name"
+    name="name"
+    placeholder="Nome da propriedade"
+    required
+  />
+  <input
+    [(ngModel)]="location"
+    name="location"
+    placeholder="Localização"
+    required
+  />
+  <input
+    [(ngModel)]="size"
+    name="size"
+    type="number"
+    placeholder="Tamanho (ha)"
+    required
+  />
+  <input
+    [(ngModel)]="userId"
+    name="userId"
+    placeholder="ID do usuário"
+    required
+  />
+
+  <button type="button" (click)="toggleMarking()">
+    {{ isMarkingActive ? 'Desativar marcação' : 'Ativar marcação' }}
+  </button>
+  <button type="button" (click)="clearPoints()">Limpar pontos</button>
+
+  <div #map style="height: 400px; margin: 20px 0;"></div>
+
+  <button type="submit">Salvar Propriedade</button>
+</form>
+ 
