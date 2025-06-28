@@ -1,0 +1,126 @@
+<div class="register-container">
+  <mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="userForm" errorMessage="Name is required.">
+      <form [formGroup]="userForm">
+        <ng-template matStepLabel>Dados Pessoais</ng-template>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>CPF</mat-label>
+          <input matInput MaskDefault="cpf" formControlName="cpf" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Telefone</mat-label>
+
+          <input matInput MaskDefault="phone" formControlName="phone" />
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-button matStepperNext [disabled]="userForm.invalid">
+            Próximo
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="addressForm" errorMessage="Name is required.">
+      <form [formGroup]="addressForm">
+        <ng-template matStepLabel>Endereço</ng-template>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>CEP</mat-label>
+          <input matInput MaskDefault="cep" formControlName="cep" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Rua</mat-label>
+          <input matInput formControlName="place" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Número</mat-label>
+          <input matInput formControlName="number" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Complemento</mat-label>
+          <input matInput formControlName="complement" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Bairro</mat-label>
+          <input matInput formControlName="neighborhood" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Cidade</mat-label>
+          <input matInput formControlName="city" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>UF</mat-label>
+          <input matInput formControlName="uf" />
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-button matStepperPrevious>Voltar</button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onSubmit(stepper)"
+            [disabled]="addressForm.invalid"
+          >
+            Cadastrar
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="keyForm" errorMessage="Name is required.">
+      <ng-template matStepLabel>Confirmação de Email</ng-template>
+       <form [formGroup]="keyForm">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Código enviado por email</mat-label>
+          <input matInput formControlName="key" />
+        </mat-form-field>
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="onSubmitKey()"
+            [disabled]="keyForm.invalid"
+          >
+            Cadastrar
+          </button>
+       </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

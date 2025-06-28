@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -22,6 +23,8 @@
     "@angular/router": "^19.2.0",
     "@turf/turf": "^7.2.0",
     "leaflet": "^1.9.4",
+    "ng-angular-popup": "^1.0.0",
+    "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
