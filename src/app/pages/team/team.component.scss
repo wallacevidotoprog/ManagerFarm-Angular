@@ -1,0 +1,28 @@
+.funcionarios-container {
+  margin: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+}
+
+.sidenav-container {
+  height: 0; // evita que fique aparecendo o container quando fechado
+}
+.spacer {
+  flex: 1 1 auto;
+}
+
+.formulario {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

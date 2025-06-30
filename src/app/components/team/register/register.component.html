@@ -1,0 +1,229 @@
+<div class="custom-backdrop" (click)="close()" *ngIf="isOpen"></div>
+<!-- *ngIf="isOpen" -->
+
+<div class="custom-modal" *ngIf="isOpen">
+  <div class="modal-header">
+    <mat-icon>recent_actors</mat-icon>
+    <h2>Cadastro de Funcionário</h2>
+    <button mat-icon-button color="warn" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-content">
+    <mat-horizontal-stepper linear #stepper class="form-container">
+      <mat-step [stepControl]="formEmploee" errorMessage="Name is required.">
+        <form [formGroup]="formEmploee">
+          <ng-template matStepLabel>Dados Pessoais</ng-template>
+
+          <div class="grid-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Nome</mat-label>
+              <input matInput formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>CPF</mat-label>
+              <input matInput MaskDefault="cpf" formControlName="cpf" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>RG</mat-label>
+              <input matInput MaskDefault="rg" formControlName="rg" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>CNH</mat-label>
+              <input matInput MaskDefault="cnh" formControlName="cnh" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Categoria CNH</mat-label>
+              <mat-select formControlName="category_cnh">
+                <mat-option *ngFor="let c of categorias" [value]="c">{{
+                  c
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Validade CNH</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                formControlName="maturity_cnh"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Telefone</mat-label>
+              <input matInput MaskDefault="phone" formControlName="phone" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nascimento</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker2"
+                formControlName="birth"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker2"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Sexo</mat-label>
+              <mat-select formControlName="sex">
+                <mat-option *ngFor="let s of sex" [value]="s">{{
+                  s
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="actions">
+            <button mat-button matStepperNext [disabled]="formEmploee.invalid">
+              Próximo
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="formAddres" errorMessage="Name is required.">
+        <form [formGroup]="formAddres">
+          <ng-template matStepLabel>Endereço</ng-template>
+
+          <div class="grid-form">
+            <mat-form-field appearance="outline">
+              <mat-label>CEP</mat-label>
+              <input matInput MaskDefault="cep" formControlName="cep" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Rua</mat-label>
+              <input matInput formControlName="place" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="number" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Complemento</mat-label>
+              <input matInput formControlName="complement" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="neighborhood" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="city" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>UF</mat-label>
+              <input matInput formControlName="uf" />
+            </mat-form-field>
+          </div>
+
+          <div class="actions">
+            <button mat-button matStepperPrevious>Voltar</button>
+            <button mat-button matStepperNext [disabled]="formAddres.invalid">
+              Próximo
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="formAdm" errorMessage="Name is required.">
+        <form [formGroup]="formAdm">
+          <ng-template matStepLabel>Dados Administrativos</ng-template>
+
+          <div class="grid-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Data de admissão</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker3"
+                formControlName="admission"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker3"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Salário</mat-label>
+              <input matInput MaskDefault="real" formControlName="salary" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>CBO</mat-label>
+              <input matInput formControlName="cbo" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>PIS</mat-label>
+              <input matInput formControlName="pis" />
+            </mat-form-field>
+          </div>
+
+          <div class="actions">
+            <button mat-button matStepperPrevious>Voltar</button>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="onSubmit(stepper)"
+              [disabled]="
+                !formEmploee.valid ||
+                !formAddres.valid ||
+                !formAdm.valid ||
+                isLoadApi
+              "
+              style="display: flex;"
+            >
+              @if (!isLoadApi){
+                <mat-icon>add_circle</mat-icon>
+                <label for="Cadastrar">Cadastrar</label>  } @else {
+              <mat-spinner [diameter]="20" />
+
+              }
+            </button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+  <!-- <button
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit(stepper)"
+    [disabled]="
+      (!formEmploee.valid || !formAddres.valid || !formAdm.valid) && !isLoadApi
+    "
+  >
+    @if (!isLoadApi){ Cadastrar } @else {
+    <mat-spinner [diameter]="20" />
+
+    }
+  </button> -->
+</div>

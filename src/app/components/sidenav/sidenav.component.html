@@ -1,0 +1,63 @@
+<!-- Menu topo -->
+<mat-toolbar color="primary" class="navbar">
+  <span class="logo">Minha Fazenda</span>
+
+  <span class="spacer"></span>
+
+  <!-- Botão de menu (visível só no mobile) -->
+  <button mat-icon-button (click)="drawer.toggle()" class="mobile-toggle">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Navegação padrão (visível no desktop) -->
+  <nav class="desktop-menu">
+    <button mat-button routerLink="/home/team">
+      <mat-icon>people</mat-icon>
+      Equipe
+    </button>
+
+    <button mat-button routerLink="/propriedade">
+      <mat-icon>home</mat-icon>
+      Propriedade
+    </button>
+
+    <button mat-button [matMenuTriggerFor]="pecuariaMenu">
+      <mat-icon>pets</mat-icon>
+      Pecuária
+    </button>
+    <mat-menu #pecuariaMenu="matMenu">
+      <button mat-menu-item routerLink="/pecuaria/gado">
+        <mat-icon>pets</mat-icon>
+        Gado
+      </button>
+      <button mat-menu-item routerLink="/pecuaria/avicultura">
+        <mat-icon>egg</mat-icon>
+        Avicultura
+      </button>
+    </mat-menu>
+  </nav>
+</mat-toolbar>
+
+<!-- Menu lateral para mobile -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer mode="over" class="mobile-sidenav">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home/team">
+        <mat-icon>people</mat-icon>
+        Equipe
+      </a>
+      <a mat-list-item routerLink="/propriedade">
+        <mat-icon>home</mat-icon>
+        Propriedade
+      </a>
+      <a mat-list-item routerLink="/pecuaria/gado">
+        <mat-icon>pets</mat-icon>
+        Gado
+      </a>
+      <a mat-list-item routerLink="/pecuaria/avicultura">
+        <mat-icon>egg</mat-icon>
+        Avicultura
+      </a>
+    </mat-nav-list>
+  </mat-sidenav> 
+</mat-sidenav-container>

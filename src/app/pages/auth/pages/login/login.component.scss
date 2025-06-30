@@ -3,20 +3,48 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f3f3f3;
+  // background-color: #f3f3f3;
 }
 
 .login-card {
-  width: 100%;
+  width: 90%;
   max-width: 400px;
   padding: 20px;
 }
-
+.mat-mdc-card-header {
+  display: flex;
+  padding: 16px 16px 0;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+}
 .full-width {
   width: 100%;
   margin-bottom: 16px;
 }
 
 .footer-actions {
-  justify-content: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
 }
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/assets/bac-log.jpg");
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+}
+ img{
+  width: 100px;
+  padding-bottom: 20px;
+ }

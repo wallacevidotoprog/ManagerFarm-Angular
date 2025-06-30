@@ -14,14 +14,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { Router } from '@angular/router';
-import { NgToastService } from 'ng-angular-popup';
+import { ToastrService } from 'ngx-toastr';
 import { CepService } from '../../../../../api/external/services/cep.service';
 import { UserApiService } from '../../../../../api/internal/service/user.api';
 import { HttpStatus } from '../../../../../api/Utils/HttpStaus';
 import { cpfValidator } from '../../../../common/validators/cpf.validator';
 import { MaskDirective } from '../../../../directive/mask.directive';
 import { ICheckedAccount } from '../../../../Models/interfaces/api.interface';
-import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -37,7 +36,6 @@ import { ToastrService } from 'ngx-toastr';
     MatStepperModule,
     MaskDirective,
   ],
-
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -50,6 +48,7 @@ export class RegisterComponent {
   private serviceUser: UserApiService = inject(UserApiService);
   private route: Router = inject(Router);
   private alerts: ToastrService = inject(ToastrService);
+
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
@@ -72,8 +71,11 @@ export class RegisterComponent {
     this.keyForm = this.fb.group({
       key: ['', Validators.required],
     });
+
     this.addressForm.get('cep')?.valueChanges.subscribe((cep) => {
-      if (cep?.length === 8) this.buscarCep(cep);
+      if (cep?.length === 8) {
+        this.buscarCep(cep);
+      }
     });
   }
 
@@ -98,8 +100,8 @@ export class RegisterComponent {
       };
       this.serviceUser.registerUserDefault(fullData).subscribe({
         next: (value) => {
-          console.log('value:',value);
-          
+          console.log('value:', value);
+
           if (value.statusCode === HttpStatus.OK) {
             this.alerts.info('Código enviado por email', 'Acesse seu Email');
             stepper.next();
@@ -109,7 +111,7 @@ export class RegisterComponent {
         },
         error: (err) => {
           console.error('Erro ao registrar:', err);
-           this.alerts.error(err.message || 'Erro desconhecido.');
+          this.alerts.error(err.message || 'Erro desconhecido.');
         },
       });
     }
@@ -124,7 +126,7 @@ export class RegisterComponent {
       this.serviceUser.checkedKey(payload).subscribe({
         next: (value) => {
           if (value.statusCode === HttpStatus.OK) {
-            this.alerts.success("Conta criada com sucesso","Sucesso")
+            this.alerts.success('Conta criada com sucesso', 'Sucesso');
             this.route.navigate(['/auth/login']);
           }
           this.alerts.error(
@@ -133,7 +135,7 @@ export class RegisterComponent {
           );
         },
         error: (err) => {
-           this.alerts.error(err.message || 'Erro desconhecido.');
+          this.alerts.error(err.message || 'Erro desconhecido.');
           console.error('Erro:', err);
         },
       });

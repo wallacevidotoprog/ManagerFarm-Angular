@@ -12,14 +12,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
-import { NgToastModule, NgToastService } from 'ng-angular-popup';
+import { ToastrService } from 'ngx-toastr';
 import { UserApiService } from '../../../../../api/internal/service/user.api';
 import { HttpStatus } from '../../../../../api/Utils/HttpStaus';
 import { ILogin } from '../../../../Models/interfaces/api.interface';
-import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
-  standalone:true,
+  standalone: true,
   imports: [
     CommonModule,
     RouterLink,
@@ -29,7 +28,6 @@ import { ToastrService } from 'ngx-toastr';
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
-    NgToastModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -52,7 +50,6 @@ export class LoginComponent {
 
       this.service.login(payload).subscribe({
         next: (value) => {
-          
           if (value.statusCode === HttpStatus.ACCEPTED) {
             console.log(value);
             this.alerts.info(`Olá ${value.data.user_name}`, 'Usuário logado');

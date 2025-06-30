@@ -1,0 +1,64 @@
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.custom-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  max-width: 900px;
+  max-height: 90vh;
+  background: white;
+  border-radius: 8px;
+  z-index: 1001;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px 0 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.modal-content {
+  padding: 16px;
+}
+::ng-deep .cdk-overlay-container {
+  z-index: 1100 !important;
+}
+.grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 10px;
+  gap: 5px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+span.mdc-button__label {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+}

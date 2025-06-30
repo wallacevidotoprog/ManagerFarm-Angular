@@ -1,7 +1,8 @@
+<div class="background"></div>
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
+     <img mat-card-image src="/assets/login.png" alt="imagem de login" />
     </mat-card-header>
 
     <mat-card-content>
@@ -62,10 +63,11 @@
     </mat-card-content>
 
     <mat-card-actions class="footer-actions">
-      <samp>Não tem conta ? </samp>
-      <a routerLink="/auth/register">Cadastar</a>
-      <samp> ou </samp>
       <a href="">Esqueceu a senha?</a>
+      <div>
+        <samp>Não tem conta ? </samp>
+        <a routerLink="/auth/register">Cadastar</a>
+      </div>
     </mat-card-actions>
   </mat-card>
 </div>
