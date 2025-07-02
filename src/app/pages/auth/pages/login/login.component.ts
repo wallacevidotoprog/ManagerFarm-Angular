@@ -18,11 +18,7 @@ import { HttpStatus } from '../../../../../api/Utils/HttpStaus';
 import { ILogin } from '../../../../Models/interfaces/api.interface';
 @Component({
   selector: 'app-login',
-<<<<<<< HEAD
   standalone: true,
-=======
-  standalone:true,
->>>>>>> 551242e8fb94e164cda533d03333f8a8400fc802
   imports: [
     CommonModule,
     RouterLink,
@@ -32,10 +28,6 @@ import { ILogin } from '../../../../Models/interfaces/api.interface';
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
-<<<<<<< HEAD
-=======
-    NgToastModule
->>>>>>> 551242e8fb94e164cda533d03333f8a8400fc802
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
