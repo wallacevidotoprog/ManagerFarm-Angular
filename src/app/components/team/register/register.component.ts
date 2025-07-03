@@ -1,4 +1,3 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import {
@@ -7,10 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  MatAutocompleteModule,
-  MatAutocompleteSelectedEvent,
-} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -30,9 +26,12 @@ import { MaskDirective } from '../../../directive/mask.directive';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ToastrService } from 'ngx-toastr';
+import { CepService } from '../../../../api/external/services/cep.service';
 import { IEmployee } from '../../../../api/internal/model/emploee.interface';
 import { EmploeeApiService } from '../../../../api/internal/service/emploee.api';
 import { HttpStatus } from '../../../../api/Utils/HttpStaus';
+import { cnhCategory, sex, ufs } from '../../../common/arrays-default';
+import { InputChipsComponent } from '../../input-chips/input-chips.component';
 @Component({
   selector: 'app-register-team',
   standalone: true,
@@ -55,6 +54,7 @@ import { HttpStatus } from '../../../../api/Utils/HttpStaus';
     MaskDirective,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
+    InputChipsComponent,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -66,16 +66,15 @@ export class RegisterComponent {
 
   private fb: FormBuilder = inject(FormBuilder);
   private service: EmploeeApiService = inject(EmploeeApiService);
+  private cepService: CepService = inject(CepService);
   private alert: ToastrService = inject(ToastrService);
 
   protected isLoadApi = false;
-  protected cnhCategory = ['A', 'B', 'C', 'D', 'E'];
-  protected sex = ['MASCULINO', 'FEMININO', 'OUTRO'];
+  protected cnhCategory = cnhCategory;
+  protected sex = sex;
+  protected uf = ufs;
   protected selectedDepartamento!: IDepartament;
   protected availableFunctions: IFunctionsList[] = [];
-  protected separatorKeysCodes: number[] = [ENTER, COMMA];
-  protected categoriaInputControl = this.fb.control('');
-  protected filteredCategorias: string[] = [...this.cnhCategory];
 
   protected formEmploee: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -96,7 +95,7 @@ export class RegisterComponent {
     pis: [''],
     functionId: ['', Validators.required],
   });
-  protected formAddres = this.fb.group({
+  protected formAddress = this.fb.group({
     cep: ['', Validators.required],
     place: ['', Validators.required],
     number: ['', Validators.required],
@@ -106,52 +105,17 @@ export class RegisterComponent {
     uf: ['', [Validators.required, Validators.maxLength(2)]],
   });
 
-  selectedCategoria(event: MatAutocompleteSelectedEvent): void {
-    const selected = event.option.value;
-    const current = this.formEmploee.get('category_cnh')?.value;
-    if (!current.includes(selected)) {
-      this.formEmploee.get('category_cnh')?.setValue([...current, selected]);
-    }
-    this.categoriaInputControl.setValue('');
-  }
-  addCategoriaViaEnter() {
-    const value = this.categoriaInputControl.value?.trim();
-    if (
-      value &&
-      this.cnhCategory.includes(value) &&
-      !this.formEmploee.get('category_cnh')?.value.includes(value)
-    ) {
-      const current = this.formEmploee.get('category_cnh')?.value;
-      this.formEmploee.get('category_cnh')?.setValue([...current, value]);
-      this.categoriaInputControl.setValue('');
-    }
-  }
-  addCategoria(event: any): void {
-    const inputValue = event.value?.trim();
-    if (inputValue && this.cnhCategory.includes(inputValue)) {
-      const current = this.formEmploee.get('category_cnh')?.value;
-      if (!current.includes(inputValue)) {
-        this.formEmploee
-          .get('category_cnh')
-          ?.setValue([...current, inputValue]);
-        this.categoriaInputControl.setValue('');
-      }
-    }
-  }
-  removeCategoria(categoria: string): void {
-    const current = this.formEmploee.get('category_cnh')?.value;
-    this.formEmploee
-      .get('category_cnh')
-      ?.setValue(current.filter((c: string) => c !== categoria));
-  }
-
   async onSubmit(stepper: MatStepper): Promise<void> {
-    if (this.formEmploee.valid && this.formAddres.valid && this.formAdm.valid) {
+    if (
+      this.formEmploee.valid &&
+      this.formAddress.valid &&
+      this.formAdm.valid
+    ) {
       const payload: IEmployee = {
         ...this.formEmploee.value,
         ...this.formAdm.value,
         address: {
-          ...this.formAddres.value,
+          ...this.formAddress.value,
         },
       };
 
@@ -170,20 +134,29 @@ export class RegisterComponent {
           this.alert.warning(err.message);
         },
       });
-
-      // console.log(payload);
-
-      this.isLoadApi = true;
-      // setTimeout(() => {
-      //   this.isLoadApi = false;
-      // }, 2000);
+      this.isLoadApi = false;
     }
-    // if (this.form.invalid) return;
-    // const payload = this.form.value;
-    // console.log('Enviar para API:', payload);
-    // this.funcionarioService.create(payload).subscribe(...)
   }
   close() {
     this.closeModal.emit();
+  }
+
+  searchCEP() {
+    const cep = this.formAddress.get('cep')?.value;
+    console.log('cep',cep);
+    
+      if (cep?.length === 8) {
+        this.cepService.searchCep(cep.replace(/\D/g, '')).subscribe((data) => {
+          if (!data.erro) {
+            this.formAddress.patchValue({
+              place: data.logradouro,
+              neighborhood: data.bairro,
+              city: data.localidade,
+              uf: data.uf,
+            });
+          }
+        });
+      }
+    
   }
 }

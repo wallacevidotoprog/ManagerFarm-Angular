@@ -37,58 +37,13 @@
               <mat-label>CNH</mat-label>
               <input matInput MaskDefault="cnh" formControlName="cnh" />
             </mat-form-field>
-
-            <!-- <mat-form-field appearance="outline">
-              <mat-label>Categoria CNH</mat-label>
-              <mat-select formControlName="category_cnh">
-                <mat-option *ngFor="let c of cnhCategory" [value]="c">{{
-                  c
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field> -->
-
-              <mat-form-field appearance="outline">
-              <mat-label>Categoria CNH</mat-label>
-              <mat-chip-grid #chipGrid aria-label="Seleção de categorias CNH">
-                <mat-chip-row
-                  *ngFor="let cnhCategory of formEmploee.get('category_cnh')?.value"
-                  (removed)="removeCategoria(cnhCategory)"
-                >
-                  {{ cnhCategory }}
-                  <button
-                    matChipRemove
-                    [attr.aria-label]="'Remover ' + cnhCategory"
-                  >
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                </mat-chip-row>
-              </mat-chip-grid>
-
-              <input
-              (keydown.enter)="addCategoriaViaEnter()"
-              [formControl]="categoriaInputControl"
-              
-              
-                placeholder="Adicionar categoria..."
-                [matChipInputFor]="chipGrid"
-                [matAutocomplete]="auto"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="addCategoria($event)"
-              />
-
-              <mat-autocomplete
-                #auto="matAutocomplete"
-                (optionSelected)="selectedCategoria($event)"
-              >
-                <mat-option
-                  *ngFor="let categoria of filteredCategorias"
-                  [value]="categoria"
-                >
-                  {{ categoria }}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          
+           
+            <app-input-chips
+              [label]="'Categoria CNH'"
+              [placeholder]="'Adicionar categoria...'"
+              [options]="cnhCategory"
+              formControlName="category_cnh"
+            />
 
             <mat-form-field appearance="outline">
               <mat-label>Validade CNH</mat-label>
@@ -97,13 +52,12 @@
                 [matDatepicker]="picker1"
                 formControlName="maturity_cnh"
               />
-              
+
               <mat-datepicker-toggle
                 matSuffix
                 [for]="picker1"
               ></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
-              
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -123,7 +77,7 @@
                 [matDatepicker]="picker2"
                 formControlName="birth"
               />
-              
+
               <mat-datepicker-toggle
                 matSuffix
                 [for]="picker2"
@@ -144,19 +98,20 @@
           <div class="actions">
             <button mat-button matStepperNext [disabled]="formEmploee.invalid">
               Próximo
+              <mat-icon>arrow_forward</mat-icon>
             </button>
           </div>
         </form>
       </mat-step>
 
-      <mat-step [stepControl]="formAddres" errorMessage="Name is required.">
-        <form [formGroup]="formAddres">
+      <mat-step [stepControl]="formAddress" errorMessage="Name is required.">
+        <form [formGroup]="formAddress">
           <ng-template matStepLabel>Endereço</ng-template>
 
           <div class="grid-form">
             <mat-form-field appearance="outline">
               <mat-label>CEP</mat-label>
-              <input matInput MaskDefault="cep" formControlName="cep" />
+              <input matInput MaskDefault="cep" formControlName="cep" (change)="searchCEP()"/>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -184,15 +139,27 @@
               <input matInput formControlName="city" />
             </mat-form-field>
 
+            
+            <mat-form-field appearance="outline">
+              <mat-label>UF</mat-label>
+              <mat-select formControlName="uf">
+                <mat-option *ngFor="let s of uf" [value]="s">{{
+                  s
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+<!--           
             <mat-form-field appearance="outline">
               <mat-label>UF</mat-label>
               <input matInput formControlName="uf" />
             </mat-form-field>
-          </div>
+          </div> -->
 
           <div class="actions">
-            <button mat-button matStepperPrevious>Voltar</button>
-            <button mat-button matStepperNext [disabled]="formAddres.invalid">
+            <button mat-button matStepperPrevious><mat-icon>reply_all</mat-icon>Voltar</button>
+            <button mat-button matStepperNext [disabled]="formAddress.invalid">
+              <mat-icon>arrow_forward</mat-icon>
               Próximo
             </button>
           </div>
@@ -211,7 +178,7 @@
                 [matDatepicker]="picker3"
                 formControlName="admission"
               />
-              
+
               <mat-datepicker-toggle
                 matSuffix
                 [for]="picker3"
@@ -267,27 +234,29 @@
             </mat-hint>
           </div>
           <div class="actions">
-            <button mat-button matStepperPrevious>Voltar</button>
+            <button mat-button matStepperPrevious><mat-icon>reply_all</mat-icon>Voltar</button>
             <button
               mat-raised-button
               color="primary"
               (click)="onSubmit(stepper)"
               [disabled]="
                 !formEmploee.valid ||
-                !formAddres.valid ||
+                !formAddress.valid ||
                 !formAdm.valid ||
                 isLoadApi
               "
               style="display: flex"
             >
-              @if (!isLoadApi){
-              <ng-container>
-                <mat-icon>add_circle</mat-icon>
-                <label for="Cadastrar">Cadastrar</label>
-              </ng-container>
-              } @else {
-              <mat-spinner [diameter]="20" />
-              }
+              <div class="centered-container">
+                @if (!isLoadApi) {
+                <ng-container>
+                  <mat-icon>add_circle</mat-icon>
+                  <label for="Cadastrar">Cadastrar</label>
+                </ng-container>
+                } @else {
+                <mat-spinner [diameter]="20" />
+                }
+              </div>
             </button>
           </div>
         </form>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,13 +12,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToastrService } from 'ngx-toastr';
 import { IDepartament } from '../../../api/internal/model/departament.interface';
 import { DepartamentApiService } from '../../../api/internal/service/departament.api';
 import { RegisterComponent } from '../../components/team/register/register.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-team',
@@ -40,6 +41,7 @@ import { RegisterComponent } from '../../components/team/register/register.compo
     MatListModule,
     MatDialogModule,
     RegisterComponent,
+    MatPaginator
   ],
   templateUrl: './team.component.html',
   styleUrl: './team.component.scss',
@@ -61,12 +63,8 @@ export class TeamComponent implements OnInit {
     });
   }
 
-  funcionarios = [
-    { name: 'João Silva', cpf: '123.456.789-00' },
-    { name: 'Maria Oliveira', cpf: '987.654.321-00' },
-  ];
+  
 
-  displayedColumns: string[] = ['name', 'cpf', 'actions'];
   formAberto = false;
   fechar: any;
 
@@ -78,15 +76,6 @@ export class TeamComponent implements OnInit {
     this.formAberto = false;
   }
 
-  editarFuncionario(funcionario: any) {
-    this.abrirFormulario();
-    // preenche o form se quiser
-  }
-
-  excluirFuncionario(funcionario: any) {
-    // lógica de exclusão
-    alert(`Excluir ${funcionario.name}`);
-  }
 
   showModal = false;
 
@@ -98,5 +87,40 @@ export class TeamComponent implements OnInit {
     console.log('team close modal');
 
     this.showModal = false;
+  }
+
+
+ isMobile = false;
+  displayedColumns: string[] = ['name', 'cpf', 'rg', 'email', 'phone', 'admission', 'actions'];
+
+
+  funcionarios = [
+    {
+      name: "João da Silva",
+      cpf: "12345678900",
+      email: "wallacevidoto@email.com",
+      phone: "11912345678",
+      admission: "2023-01-10T00:00:00.000Z",
+      
+    }
+    // ...adicione mais funcionários
+  ];
+
+  dataSource = new MatTableDataSource<any>(this.funcionarios);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  editarFuncionario(func: any) {
+    // lógica de edição
+    console.log('Editar', func);
+  }
+
+  excluirFuncionario(func: any) {
+    // lógica de exclusão
+    console.log('Excluir', func);
   }
 }
