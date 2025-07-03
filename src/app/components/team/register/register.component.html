@@ -11,7 +11,8 @@
   </div>
 
   <div class="modal-content">
-    <mat-horizontal-stepper linear #stepper class="form-container">
+    <!-- linear -->
+    <mat-horizontal-stepper #stepper class="form-container">
       <mat-step [stepControl]="formEmploee" errorMessage="Name is required.">
         <form [formGroup]="formEmploee">
           <ng-template matStepLabel>Dados Pessoais</ng-template>
@@ -37,14 +38,57 @@
               <input matInput MaskDefault="cnh" formControlName="cnh" />
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <!-- <mat-form-field appearance="outline">
               <mat-label>Categoria CNH</mat-label>
               <mat-select formControlName="category_cnh">
-                <mat-option *ngFor="let c of categorias" [value]="c">{{
+                <mat-option *ngFor="let c of cnhCategory" [value]="c">{{
                   c
                 }}</mat-option>
               </mat-select>
+            </mat-form-field> -->
+
+              <mat-form-field appearance="outline">
+              <mat-label>Categoria CNH</mat-label>
+              <mat-chip-grid #chipGrid aria-label="Seleção de categorias CNH">
+                <mat-chip-row
+                  *ngFor="let cnhCategory of formEmploee.get('category_cnh')?.value"
+                  (removed)="removeCategoria(cnhCategory)"
+                >
+                  {{ cnhCategory }}
+                  <button
+                    matChipRemove
+                    [attr.aria-label]="'Remover ' + cnhCategory"
+                  >
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              </mat-chip-grid>
+
+              <input
+              (keydown.enter)="addCategoriaViaEnter()"
+              [formControl]="categoriaInputControl"
+              
+              
+                placeholder="Adicionar categoria..."
+                [matChipInputFor]="chipGrid"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addCategoria($event)"
+              />
+
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selectedCategoria($event)"
+              >
+                <mat-option
+                  *ngFor="let categoria of filteredCategorias"
+                  [value]="categoria"
+                >
+                  {{ categoria }}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
+          
 
             <mat-form-field appearance="outline">
               <mat-label>Validade CNH</mat-label>
@@ -53,11 +97,13 @@
                 [matDatepicker]="picker1"
                 formControlName="maturity_cnh"
               />
+              
               <mat-datepicker-toggle
                 matSuffix
                 [for]="picker1"
               ></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
+              
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -77,6 +123,7 @@
                 [matDatepicker]="picker2"
                 formControlName="birth"
               />
+              
               <mat-datepicker-toggle
                 matSuffix
                 [for]="picker2"
@@ -164,6 +211,7 @@
                 [matDatepicker]="picker3"
                 formControlName="admission"
               />
+              
               <mat-datepicker-toggle
                 matSuffix
                 [for]="picker3"
@@ -185,8 +233,39 @@
               <mat-label>PIS</mat-label>
               <input matInput formControlName="pis" />
             </mat-form-field>
-          </div>
 
+            <mat-form-field appearance="outline">
+              <mat-label>Departamento</mat-label>
+              <mat-select
+                [(value)]="selectedDepartamento"
+                (selectionChange)="
+                  availableFunctions = selectedDepartamento.functionsList
+                "
+              >
+                <mat-option *ngFor="let d of dataDepartament" [value]="d">
+                  {{ d.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="outline"
+              *ngIf="availableFunctions.length > 0"
+            >
+              <mat-label>Função</mat-label>
+              <mat-select formControlName="functionId">
+                <mat-option *ngFor="let f of availableFunctions" [value]="f.id">
+                  {{ f.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-hint
+              *ngIf="selectedDepartamento && availableFunctions.length === 0"
+            >
+              Este departamento não possui funções cadastradas.
+            </mat-hint>
+          </div>
           <div class="actions">
             <button mat-button matStepperPrevious>Voltar</button>
             <button
@@ -199,13 +278,15 @@
                 !formAdm.valid ||
                 isLoadApi
               "
-              style="display: flex;"
+              style="display: flex"
             >
               @if (!isLoadApi){
+              <ng-container>
                 <mat-icon>add_circle</mat-icon>
-                <label for="Cadastrar">Cadastrar</label>  } @else {
+                <label for="Cadastrar">Cadastrar</label>
+              </ng-container>
+              } @else {
               <mat-spinner [diameter]="20" />
-
               }
             </button>
           </div>
