@@ -60,6 +60,7 @@ export class LoginComponent {
             this.router.navigate(['/dashboard']);
             return;
           }
+          this.alerts.warning(value.getMessage());
         },
         error: (err) => {
           this.alerts.error(err);

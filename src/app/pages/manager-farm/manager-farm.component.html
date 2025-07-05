@@ -1,0 +1,37 @@
+<div class="container">
+  <h2 class="title">Minhas Fazendas</h2>
+
+  <mat-accordion multi>
+    <mat-expansion-panel *ngFor="let fazenda of fazendas">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ fazenda.nome }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ fazenda.localizacao?.cidade }} - {{ fazenda.localizacao?.estado }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="info">
+        <p><strong>Área:</strong> {{ fazenda.area }} hectares</p>
+        <p><strong>Proprietário:</strong> {{ fazenda.proprietario }}</p>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" (click)="entrarFazenda(fazenda)">Entrar</button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="add-farm">
+    <button mat-stroked-button color="accent" (click)="cadastrarNovaFazenda()">
+      + Cadastrar Nova Fazenda
+    </button>
+  </div>
+</div>
+
+<app-register-farm 
+[isOpen]="openModalRegisterFarm"
+(close)="fecharModal()"
+
+/>

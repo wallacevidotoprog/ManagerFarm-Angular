@@ -1,0 +1,199 @@
+<app-base-modal
+  [isOpen]="isOpen"
+  (closeModal)="close.emit()"
+  title="Cadastro de fazenda"
+  icon="agriculture"
+>
+  <mat-horizontal-stepper #stepper class="form-container">
+    <mat-step [stepControl]="formProperty" errorMessage="Name is required.">
+      <form [formGroup]="formProperty">
+        <ng-template matStepLabel>Dados Pessoais</ng-template>
+
+        <div class="grid-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+
+          <!-- <mat-form-field appearance="outline">
+              <mat-label>CPF</mat-label>
+              <input matInput MaskDefault="cpf" formControlName="cpf" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>RG</mat-label>
+              <input matInput MaskDefault="rg" formControlName="rg" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>CNH</mat-label>
+              <input matInput MaskDefault="cnh" formControlName="cnh" />
+            </mat-form-field> -->
+
+          <!-- <app-input-chips
+              [label]="'Categoria CNH'"
+              [placeholder]="'Adicionar categoria...'"
+              [options]="cnhCategory"
+              formControlName="category_cnh"
+            /> -->
+
+          <!-- <mat-form-field appearance="outline">
+              <mat-label>Validade CNH</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                formControlName="maturity_cnh"
+              />
+
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Telefone</mat-label>
+              <input matInput MaskDefault="phone" formControlName="phone" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nascimento</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker2"
+                formControlName="birth"
+              />
+
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker2"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field> -->
+
+          <!-- <mat-form-field appearance="outline">
+              <mat-label>Sexo</mat-label>
+              <mat-select formControlName="sex">
+                <mat-option *ngFor="let s of sex" [value]="s">{{
+                  s
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field> -->
+        </div>
+
+        <div class="actions">
+          <button mat-button matStepperNext [disabled]="formProperty.invalid">
+            Próximo
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="formAddress" errorMessage="Name is required.">
+      
+      <form [formGroup]="formAddress">
+          <ng-template matStepLabel>Endereço</ng-template>
+
+          <div class="grid-form">
+            <mat-form-field appearance="outline">
+              <mat-label>CEP</mat-label>
+              <input
+                matInput
+                MaskDefault="cep"
+                formControlName="cep"
+                (change)="searchCEP()"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Rua</mat-label>
+              <input matInput formControlName="place" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="number" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Complemento</mat-label>
+              <input matInput formControlName="complement" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="neighborhood" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="city" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>UF</mat-label>
+              <mat-select formControlName="uf">
+                <mat-option *ngFor="let s of uf" [value]="s">{{
+                  s
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+         
+
+          <div class="actions">
+            <button mat-button matStepperPrevious>
+              <mat-icon>reply_all</mat-icon>Voltar
+            </button>
+            <button mat-button matStepperNext [disabled]="formAddress.invalid">
+              <mat-icon>arrow_forward</mat-icon>
+              Próximo
+            </button>
+          </div>
+        </form>
+    </mat-step>
+
+    <mat-step [stepControl]="formPoints" errorMessage="Name is required.">
+      <form [formGroup]="formPoints">
+        <ng-template matStepLabel>Dados Administrativos</ng-template>
+
+        <app-map #mapComp (returnPoints)="onMapPointsReturn($event)" />
+        <div class="actions">
+          <button mat-button matStepperPrevious>
+            <mat-icon>reply_all</mat-icon>Voltar
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onSubmit(stepper)"
+            [disabled]="
+              !formProperty.valid ||
+              !formAddress.valid ||
+              !formPoints.valid ||
+              isLoadApi
+            "
+            style="display: flex"
+          >
+            <div class="centered-container">
+              @if (!isLoadApi) {
+              <ng-container>
+                <mat-icon>add_circle</mat-icon>
+                <label for="Cadastrar">Cadastrar</label>
+              </ng-container>
+              } @else {
+              <mat-spinner [diameter]="20" />
+              }
+            </div>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+</app-base-modal>

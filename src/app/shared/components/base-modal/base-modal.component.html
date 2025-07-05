@@ -1,0 +1,15 @@
+<div class="custom-backdrop" (click)="closeModal.emit()" *ngIf="isOpen"></div>
+
+<div class="custom-modal" *ngIf="isOpen">
+  <div class="modal-header">
+    <mat-icon>{{ icon }}</mat-icon>
+    <h2>{{ title }}</h2>
+    <button mat-icon-button aria-label="Fechar"   class="close-button" (click)="closeModal.emit()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-content">
+    <ng-content></ng-content>
+  </div>
+</div>

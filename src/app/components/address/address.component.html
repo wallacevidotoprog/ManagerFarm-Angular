@@ -1,0 +1,60 @@
+<form [formGroup]="formAddress">
+          <ng-template matStepLabel>Endereço</ng-template>
+
+          <div class="grid-form">
+            <mat-form-field appearance="outline">
+              <mat-label>CEP</mat-label>
+              <input
+                matInput
+                MaskDefault="cep"
+                formControlName="cep"
+                (change)="searchCEP()"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Rua</mat-label>
+              <input matInput formControlName="place" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="number" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Complemento</mat-label>
+              <input matInput formControlName="complement" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="neighborhood" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="city" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>UF</mat-label>
+              <mat-select formControlName="uf">
+                <mat-option *ngFor="let s of uf" [value]="s">{{
+                  s
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+         
+
+          <div class="actions">
+            <button mat-button matStepperPrevious>
+              <mat-icon>reply_all</mat-icon>Voltar
+            </button>
+            <button mat-button matStepperNext [disabled]="formAddress.invalid">
+              <mat-icon>arrow_forward</mat-icon>
+              Próximo
+            </button>
+          </div>
+        </form>

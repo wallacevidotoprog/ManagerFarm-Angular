@@ -7,9 +7,10 @@ import { LoginComponent } from './pages/auth/pages/login/login.component';
 import { RegisterComponent } from './pages/auth/pages/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ControlsComponent } from './pages/home/home.component';
+import { ManagerFarmComponent } from './pages/manager-farm/manager-farm.component';
+import { PropertyFormComponent } from './pages/property-form/property-form.component';
 import { TeamComponent } from './pages/team/team.component';
 import { PecuariaComponent } from './pecuaria/pecuaria/pecuaria.component';
-import { PropertyFormComponent } from './pages/property-form/property-form.component';
 
 export const routes: Routes = [
   {
@@ -24,13 +25,19 @@ export const routes: Routes = [
         component: PecuariaComponent,
         canActivate: [RoleGuard([Role.MANAGER])],
       },
-      { path: 'property-form', component: PropertyFormComponent 
-    // ,canActivate: [RoleGuard([Role.MANAGER])]:
-  },
+      {
+        path: 'property-form',
+        component: PropertyFormComponent,
+        // ,canActivate: [RoleGuard([Role.MANAGER])]:
+      },
     ],
     canActivate: [AuthGuard],
   },
-
+  {
+    path: 'manager-farm',
+    component: ManagerFarmComponent,
+    canActivate: [RoleGuard([Role.MANAGER, Role.OWNER])],
+  },
   {
     path: 'auth',
     component: AuthComponent,

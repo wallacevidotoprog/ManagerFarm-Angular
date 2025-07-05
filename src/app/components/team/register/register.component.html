@@ -1,6 +1,4 @@
 <div class="custom-backdrop" (click)="close()" *ngIf="isOpen"></div>
-<!-- *ngIf="isOpen" -->
-
 <div class="custom-modal" *ngIf="isOpen">
   <div class="modal-header">
     <mat-icon>recent_actors</mat-icon>
@@ -270,17 +268,5 @@
       </mat-step>
     </mat-horizontal-stepper>
   </div>
-  <!-- <button
-    mat-raised-button
-    color="primary"
-    (click)="onSubmit(stepper)"
-    [disabled]="
-      (!formEmploee.valid || !formAddres.valid || !formAdm.valid) && !isLoadApi
-    "
-  >
-    @if (!isLoadApi){ Cadastrar } @else {
-    <mat-spinner [diameter]="20" />
-
-    }
-  </button> -->
+  
 </div>
