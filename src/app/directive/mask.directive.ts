@@ -35,7 +35,8 @@ export class MaskDirective implements ControlValueAccessor {
   @HostListener('input', ['$event.target.value'])
   onInput(value: string) {
     const numericValue = value.replace(/\D/g, '');
-    let formatted = numericValue;
+    let formatted = '';
+    let valueToEmit: any = numericValue;
 
     switch (this.maskType) {
       case 'cpf':
@@ -57,10 +58,11 @@ export class MaskDirective implements ControlValueAccessor {
         formatted = this.formatCEP(numericValue);
         break;
       case 'real':
+        // formatted = this.formatREAL(numericValue);
         formatted = this.formatREAL(numericValue);
+        valueToEmit = parseFloat(numericValue) / 100;
         break;
     }
-
     this.el.nativeElement.value = formatted;
     this.onChange(numericValue);
   }
@@ -69,7 +71,6 @@ export class MaskDirective implements ControlValueAccessor {
   onBlur() {
     this.onTouched();
   }
-
   writeValue(value: any): void {
     if (value === null || value === undefined) {
       this.el.nativeElement.value = '';
@@ -78,19 +79,16 @@ export class MaskDirective implements ControlValueAccessor {
       this.el.nativeElement.value = formatted;
     }
   }
-
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
-
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-
   private formatValue(value: string): string {
-    // const numeric = value.replace(/\D/g, '');
     const strValue = (value ?? '').toString(); // garante string
-  const numeric = strValue.replace(/\D/g, '');
+    const numeric = strValue.replace(/\D/g, '');
+    console.log('formatValue', strValue, numeric);
 
     switch (this.maskType) {
       case 'cpf':
@@ -111,12 +109,11 @@ export class MaskDirective implements ControlValueAccessor {
         return value;
     }
   }
-
   private formatREAL(value: string): string {
     const nub = parseFloat(value) / 100;
     const formatted = nub.toLocaleString('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL',
     });
     return formatted;
   }
@@ -130,19 +127,16 @@ export class MaskDirective implements ControlValueAccessor {
       .replace(/^(\d{2})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4')
       .slice(0, 12);
   }
-
   private formatCNH(value: string): string {
     return value
       .replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4')
       .slice(0, 14);
   }
-
   private formatCNPJ(value: string): string {
     return value
       .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/, '$1.$2.$3/$4-$5')
       .slice(0, 18);
   }
-
   private formatTelefone(value: string): string {
     if (value.length <= 10) {
       return value
@@ -151,7 +145,6 @@ export class MaskDirective implements ControlValueAccessor {
     }
     return value.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3').slice(0, 15);
   }
-
   private formatCEP(value: string): string {
     return value.replace(/^(\d{5})(\d{0,3})/, '$1-$2').slice(0, 9);
   }

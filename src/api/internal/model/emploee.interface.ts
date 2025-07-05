@@ -1,11 +1,11 @@
-import { IAddress } from "./address.interface";
+import { IAddress } from './address.interface';
 
 export interface IEmployee {
   name: string;
   cpf: string;
   rg: string;
   cnh: string;
-  category_cnh: string[]; 
+  category_cnh: string[];
   maturity_cnh: Date;
   admission: Date;
   birth: Date;
@@ -14,8 +14,39 @@ export interface IEmployee {
   email: string;
   pis: string;
   cbo: string;
-  salary: string; 
+  salary: number;
   functionId: string;
   address?: IAddress;
-  addressId?:string;
+  addressId?: string;
+}
+
+export interface ResponseEmployee {
+  data: Employees[];
+  total: number;
+}
+
+export interface Employees {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  cpf: string;
+  rg: string;
+  cnh: string;
+  category_cnh: string[];
+  maturity_cnh: Date;
+  email: string;
+  phone: string;
+  birth: Date;
+  addressId: string;
+  address: IAddress;
+  admission: Date;
+  salary: string;
+  cbo: string;
+  pis: string;
+  sex: string;
+  demission: null;
+  propertyId: null;
+  property: null;
+  active: boolean;
 }

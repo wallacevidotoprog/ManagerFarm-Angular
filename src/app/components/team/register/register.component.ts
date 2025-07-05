@@ -104,7 +104,11 @@ export class RegisterComponent {
     city: ['', Validators.required],
     uf: ['', [Validators.required, Validators.maxLength(2)]],
   });
-
+teste(){
+  console.log('this.formAdm: ',this.formAdm.value);
+  console.log('this.formAdm -  Format : ', parseFloat(this.formAdm.value.salary ?? '0') / 100);
+  
+}
   async onSubmit(stepper: MatStepper): Promise<void> {
     if (
       this.formEmploee.valid &&
@@ -114,17 +118,22 @@ export class RegisterComponent {
       const payload: IEmployee = {
         ...this.formEmploee.value,
         ...this.formAdm.value,
+        salary: (parseFloat(this.formAdm.value.salary ?? '0') / 100),
         address: {
           ...this.formAddress.value,
         },
       };
-
-      await this.service.registerEnployee(payload).subscribe({
+      this.isLoadApi = true;
+      await this.service.registerEmployee(payload).subscribe({
         next: (value) => {
           if (value.statusCode === HttpStatus.CREATED) {
             this.alert.success(
               `Funcionário: ${this.formEmploee.value.name} registrado`
             );
+            this.formEmploee.reset()
+            this.formAdm.reset()
+            this.formAddress.reset()
+            this.closeModal.emit();
             return;
           }
 
@@ -143,20 +152,19 @@ export class RegisterComponent {
 
   searchCEP() {
     const cep = this.formAddress.get('cep')?.value;
-    console.log('cep',cep);
-    
-      if (cep?.length === 8) {
-        this.cepService.searchCep(cep.replace(/\D/g, '')).subscribe((data) => {
-          if (!data.erro) {
-            this.formAddress.patchValue({
-              place: data.logradouro,
-              neighborhood: data.bairro,
-              city: data.localidade,
-              uf: data.uf,
-            });
-          }
-        });
-      }
-    
+    console.log('cep', cep);
+
+    if (cep?.length === 8) {
+      this.cepService.searchCep(cep.replace(/\D/g, '')).subscribe((data) => {
+        if (!data.erro) {
+          this.formAddress.patchValue({
+            place: data.logradouro,
+            neighborhood: data.bairro,
+            city: data.localidade,
+            uf: data.uf,
+          });
+        }
+      });
+    }
   }
 }

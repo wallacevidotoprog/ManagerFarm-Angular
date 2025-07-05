@@ -1,0 +1,9 @@
+export enum Role {
+  NONE = 'NONE',
+  DEV = 'DEV',
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+  GENERAL_MANAGER = 'GENERAL_MANAGER',
+  EMPLOYEE = 'EMPLOYEE',
+  OWNER = 'OWNER',
+}

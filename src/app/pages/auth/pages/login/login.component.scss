@@ -48,3 +48,14 @@
   width: 100px;
   padding-bottom: 20px;
  }
+
+ .centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  text-align: center;
+  flex-direction: row;
+}

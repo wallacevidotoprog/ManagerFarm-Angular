@@ -98,7 +98,34 @@ export class UserApiService {
   checked(): Observable<ResponseAPI<any>> {
     return this.http
       .get<ResponseAPI<any>>(
-        `${environment.apiUrl}auth/active-account`,
+        `${environment.apiUrl}auth/check`,
+
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          observe: 'response',
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        map((res) => new ResponseAPI<any>(res)),
+        catchError((error: HttpErrorResponse) => {
+          const responseApi = new ResponseAPI<any>(error, true);
+          return of(responseApi);
+        })
+      );
+  }
+
+  // getCurrentUser(): { name: string; role: string } | null {
+  //   const data = localStorage.getItem('user');
+  //   return data ? JSON.parse(data) : null;
+  // } VERIFICAR ISSO
+  getCurrentUser() {
+    return this.http
+      .get<ResponseAPI<any>>(
+        `${environment.apiUrl}auth/role`,
 
         {
           headers: {

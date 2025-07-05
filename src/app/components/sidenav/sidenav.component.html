@@ -11,12 +11,12 @@
 
   <!-- Navegação padrão (visível no desktop) -->
   <nav class="desktop-menu">
-    <button mat-button routerLink="/home/team">
+    <button mat-button routerLink="/controls/team">
       <mat-icon>people</mat-icon>
       Equipe
     </button>
 
-    <button mat-button routerLink="/propriedade">
+    <button mat-button routerLink="/controls/property-form">
       <mat-icon>home</mat-icon>
       Propriedade
     </button>
@@ -26,13 +26,41 @@
       Pecuária
     </button>
     <mat-menu #pecuariaMenu="matMenu">
-      <button mat-menu-item routerLink="/pecuaria/gado">
-        <mat-icon>pets</mat-icon>
-        Gado
+      <button mat-menu-item routerLink="/pecuaria/Bovinocultura">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Bovino Cultura
       </button>
-      <button mat-menu-item routerLink="/pecuaria/avicultura">
-        <mat-icon>egg</mat-icon>
-        Avicultura
+      <button mat-menu-item routerLink="/pecuaria/Suinocultura">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Suino Cultura
+      </button>
+      <button mat-menu-item routerLink="/pecuaria/Avicultura">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Avi Cultura
+      </button>
+      <button mat-menu-item routerLink="/pecuaria/Ovinocultura">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Ovino Cultura
+      </button>
+      <button mat-menu-item routerLink="/pecuaria/Caprinocultura">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Caprino Cultura
+      </button>
+      <button mat-menu-item routerLink="/pecuaria/Equinocultura">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Equino Cultura
+      </button>
+      <button mat-menu-item routerLink="/pecuaria/Asinocultura">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Asino Cultura
+      </button>
+      <button mat-menu-item routerLink="/pecuaria/Apicultura">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Api Cultura
+      </button>
+      <button mat-menu-item routerLink="/pecuaria/AnimaisSilvestres">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        Animais Silvestres
       </button>
     </mat-menu>
   </nav>
@@ -55,7 +83,7 @@
         Gado
       </a>
       <a mat-list-item routerLink="/pecuaria/avicultura">
-        <mat-icon>egg</mat-icon>
+        <mat-icon>arrow_forward_ios</mat-icon>
         Avicultura
       </a>
     </mat-nav-list>

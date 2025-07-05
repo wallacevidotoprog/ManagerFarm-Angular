@@ -1,18 +1,17 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
-import { ResponseAPI } from '../model/response.api';
-import { IEmployee } from '../model/emploee.interface';
 import { environment } from '../../../environments/environment';
+import { IEmployee } from '../model/emploee.interface';
+import { ResponseAPI } from '../model/response.api';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EmploeeApiService {
+  private http = inject(HttpClient);
 
-private http = inject(HttpClient);
-
-  registerEnployee(data: IEmployee): Observable<ResponseAPI<IEmployee>> {
+  registerEmployee(data: IEmployee): Observable<ResponseAPI<IEmployee>> {
     return this.http
       .post<ResponseAPI<IEmployee>>(`${environment.apiUrl}employee`, data, {
         headers: {
@@ -20,6 +19,7 @@ private http = inject(HttpClient);
           'Content-Type': 'application/json',
         },
         observe: 'response',
+        withCredentials:true
       })
       .pipe(
         map((res) => new ResponseAPI<IEmployee>(res)),
@@ -29,5 +29,4 @@ private http = inject(HttpClient);
         })
       );
   }
-
 }

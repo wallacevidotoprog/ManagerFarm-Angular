@@ -9,4 +9,4 @@ export const ufs = [
 
 export const cnhCategory = ['A', 'B', 'C', 'D', 'E'];
 
-export const sex = ['MASCULINO', 'FEMININO', 'OUTRO'];
+export const sex = ['MASCULINO', 'FEMININO', 'OUTROS'];

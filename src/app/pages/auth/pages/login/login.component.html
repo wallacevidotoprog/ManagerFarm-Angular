@@ -2,7 +2,7 @@
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-     <img mat-card-image src="/assets/login.png" alt="imagem de login" />
+      <img mat-card-image src="/assets/login.png" alt="imagem de login" />
     </mat-card-header>
 
     <mat-card-content>
@@ -57,7 +57,15 @@
           class="full-width"
           type="submit"
         >
-          Entrar
+          <div class="centered-container">
+            @if (!isLoadApi) {
+            <ng-container>
+              <label for="Cadastrar">ENTRAR</label>
+            </ng-container>
+            } @else {
+            <mat-spinner [diameter]="20" />
+            }
+          </div>
         </button>
       </form>
     </mat-card-content>

@@ -11,7 +11,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserApiService } from '../../../../../api/internal/service/user.api';
 import { HttpStatus } from '../../../../../api/Utils/HttpStaus';
@@ -28,6 +29,7 @@ import { ILogin } from '../../../../Models/interfaces/api.interface';
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -37,6 +39,8 @@ export class LoginComponent {
   hidePassword = true;
   private service: UserApiService = inject(UserApiService);
   private alerts: ToastrService = inject(ToastrService);
+  private router: Router = inject(Router);
+  isLoadApi = false;
   constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -47,12 +51,13 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const payload: ILogin = this.loginForm.value as ILogin;
-
+      this.isLoadApi = true;
       this.service.login(payload).subscribe({
         next: (value) => {
           if (value.statusCode === HttpStatus.ACCEPTED) {
             console.log(value);
             this.alerts.info(`Olá ${value.data.user_name}`, 'Usuário logado');
+            this.router.navigate(['/dashboard']);
             return;
           }
         },
@@ -61,6 +66,7 @@ export class LoginComponent {
           console.error('Erro ao logar:', err);
         },
       });
+      this.isLoadApi = false;
     } else {
       this.loginForm.markAllAsTouched();
     }

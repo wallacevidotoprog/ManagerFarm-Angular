@@ -11,7 +11,6 @@
   </div>
 
   <div class="modal-content">
-    <!-- linear -->
     <mat-horizontal-stepper #stepper class="form-container">
       <mat-step [stepControl]="formEmploee" errorMessage="Name is required.">
         <form [formGroup]="formEmploee">
@@ -37,7 +36,7 @@
               <mat-label>CNH</mat-label>
               <input matInput MaskDefault="cnh" formControlName="cnh" />
             </mat-form-field>
-           
+
             <app-input-chips
               [label]="'Categoria CNH'"
               [placeholder]="'Adicionar categoria...'"
@@ -111,7 +110,12 @@
           <div class="grid-form">
             <mat-form-field appearance="outline">
               <mat-label>CEP</mat-label>
-              <input matInput MaskDefault="cep" formControlName="cep" (change)="searchCEP()"/>
+              <input
+                matInput
+                MaskDefault="cep"
+                formControlName="cep"
+                (change)="searchCEP()"
+              />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -139,7 +143,6 @@
               <input matInput formControlName="city" />
             </mat-form-field>
 
-            
             <mat-form-field appearance="outline">
               <mat-label>UF</mat-label>
               <mat-select formControlName="uf">
@@ -149,7 +152,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-<!--           
+          <!--           
             <mat-form-field appearance="outline">
               <mat-label>UF</mat-label>
               <input matInput formControlName="uf" />
@@ -157,7 +160,9 @@
           </div> -->
 
           <div class="actions">
-            <button mat-button matStepperPrevious><mat-icon>reply_all</mat-icon>Voltar</button>
+            <button mat-button matStepperPrevious>
+              <mat-icon>reply_all</mat-icon>Voltar
+            </button>
             <button mat-button matStepperNext [disabled]="formAddress.invalid">
               <mat-icon>arrow_forward</mat-icon>
               Próximo
@@ -234,7 +239,9 @@
             </mat-hint>
           </div>
           <div class="actions">
-            <button mat-button matStepperPrevious><mat-icon>reply_all</mat-icon>Voltar</button>
+            <button mat-button matStepperPrevious>
+              <mat-icon>reply_all</mat-icon>Voltar
+            </button>
             <button
               mat-raised-button
               color="primary"
