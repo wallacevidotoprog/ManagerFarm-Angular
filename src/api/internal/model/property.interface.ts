@@ -3,6 +3,7 @@ import { IAddress } from './address.interface';
 
 export interface IProperty {
 
+  id?:string;
   name:string;
   cnpj: string;
   company: string;

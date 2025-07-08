@@ -30,11 +30,12 @@ import { CepService } from '../../../../api/external/services/cep.service';
 import { IEmployee } from '../../../../api/internal/model/emploee.interface';
 import { EmploeeApiService } from '../../../../api/internal/service/emploee.api';
 import { HttpStatus } from '../../../../api/Utils/HttpStaus';
-import { cnhCategory, sex, ufs } from '../../../common/arrays-default';
+import { cnhCategory, CnhCategoryList, sex, ufs } from '../../../common/arrays-default';
 import { InputChipsComponent } from '../../input-chips/input-chips.component';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FarmActivityType } from '../../../Models/enum/property.enum';
 import { Observable } from 'rxjs';
+import { ListKeyView } from '../../../@types/default.types';
 @Component({
   selector: 'app-register-team',
   standalone: true,
@@ -75,7 +76,7 @@ export class RegisterComponent {
   
   
   protected isLoadApi = false;
-  protected cnhCategory = cnhCategory;
+  protected cnhCategory = CnhCategoryList;
   protected sex = sex;
   protected uf = ufs;
   protected selectedDepartamento!: IDepartament;
@@ -85,7 +86,7 @@ export class RegisterComponent {
     name: ['', Validators.required],
     cpf: ['', Validators.required],
     rg: [''],
-    cnh: [[]],
+    cnh: [this.fb.control<ListKeyView[]>([], Validators.required)],
     category_cnh: [''],
     maturity_cnh: [''],
     email: ['', [Validators.required, Validators.email]],
@@ -123,6 +124,7 @@ teste(){
       const payload: IEmployee = {
         ...this.formEmploee.value,
         ...this.formAdm.value,
+        cnh: this.formEmploee.value.cnh?.map((v: { key: any; }) => v.key),
         salary: (parseFloat(this.formAdm.value.salary ?? '0') / 100),
         address: {
           ...this.formAddress.value,

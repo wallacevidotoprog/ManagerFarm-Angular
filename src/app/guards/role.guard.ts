@@ -18,6 +18,11 @@ export const RoleGuard = (requiredRoles: Role[]): CanActivateFn => {
         const hasRequiredRole = requiredRoles.some(role => 
           value?.getData()?.includes(role)
         );
+
+        console.log('hasRequiredRole',hasRequiredRole);
+        console.log(' value?.getData()', value?.getData());
+        
+        
         
         if (hasRequiredRole) {
           return true; // Permite o acesso

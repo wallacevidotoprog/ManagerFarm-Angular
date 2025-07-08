@@ -9,8 +9,6 @@ export class ResponseAPI<T> {
   message?: string | string[];
   messageError?: string;
   constructor(response?: HttpResponse<any> | any, error: boolean = false) {
-    console.log('response?.body', response?.body);
-
     if (error) {
       const ne = response.error as IErroApi;
       this.timestamp = ne.timestamp;

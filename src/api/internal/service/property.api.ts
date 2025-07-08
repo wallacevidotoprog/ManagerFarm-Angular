@@ -2,8 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { IDepartament } from '../model/departament.interface';
-import { ResponseEmployee } from '../model/emploee.interface';
 import { IProperty } from '../model/property.interface';
 import { ResponseAPI } from '../model/response.api';
 
@@ -13,16 +11,14 @@ export class PropertyApiService {
 
   getAllProperty(): Observable<ResponseAPI<IProperty[]>> {
     return this.http
-      .get<ResponseAPI<IProperty[]>>(
-        `${environment.apiUrl}property`,
-        {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          observe: 'response',
-        }
-      )
+      .get<ResponseAPI<IProperty[]>>(`${environment.apiUrl}property`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        observe: 'response',
+        withCredentials: true,
+      })
       .pipe(
         map((res) => new ResponseAPI<IProperty[]>(res)),
         catchError((error: HttpErrorResponse) => {
@@ -34,9 +30,29 @@ export class PropertyApiService {
 
   registerNew(data: IProperty): Observable<ResponseAPI<IProperty>> {
     return this.http
-      .post<ResponseAPI<IProperty>>(
-        `${environment.apiUrl}property`,
-        data,
+      .post<ResponseAPI<IProperty>>(`${environment.apiUrl}property`, data, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        observe: 'response',
+        withCredentials: true,
+      })
+      .pipe(
+        map((res) => new ResponseAPI<IProperty>(res)),
+        catchError((error: HttpErrorResponse) => {
+          const responseApi = new ResponseAPI<IProperty>(error, true);
+          return of(responseApi);
+        })
+      );
+  }
+
+  setProperty(idProp: string): Observable<ResponseAPI<any>> {
+    const tempId = { id: idProp };
+    return this.http
+      .post<ResponseAPI<any>>(
+        `${environment.apiUrl}auth/set-property`,
+        tempId,
         {
           headers: {
             Accept: 'application/json',
@@ -47,9 +63,9 @@ export class PropertyApiService {
         }
       )
       .pipe(
-        map((res) => new ResponseAPI<IProperty>(res)),
+        map((res) => new ResponseAPI<any>(res)),
         catchError((error: HttpErrorResponse) => {
-          const responseApi = new ResponseAPI<IProperty>(error, true);
+          const responseApi = new ResponseAPI<any>(error, true);
           return of(responseApi);
         })
       );

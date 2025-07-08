@@ -1,47 +1,66 @@
-<div class="container">
-  <h2 class="title">Minhas Fazendas</h2>
+<main>
+  <div class="container">
+    <h2 class="title">PROPRIEDADES</h2>
 
-  <mat-accordion multi>
-    <mat-expansion-panel *ngFor="let property of properties">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ property.name }}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{ property.address.city }} - {{ property.address.uf }}
-        </mat-panel-description>
-        <mat-chip
-          selected
-          [ngClass]="property.active ? 'pActive' : 'pInactive'"
-          style="margin-right: 10px"
-        >
-          {{ property.active ? "Ativo" : "Inativo" }}
-        </mat-chip>
-      </mat-expansion-panel-header>
+    <ng-container *ngIf="properties$ | async as properties">
+      <mat-accordion multi>
+        <mat-expansion-panel *ngFor="let property of properties">
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ property.name }}</mat-panel-title>
+            <mat-panel-description>
+              {{ property.address.city }} - {{ property.address.uf }}
+            </mat-panel-description>
+            <mat-chip
+              selected
+              [ngClass]="property.active ? 'pActive' : 'pInactive'"
+              style="margin-right: 10px"
+            >
+              {{ property.active ? "Ativo" : "Inativo" }}
+            </mat-chip>
+          </mat-expansion-panel-header>
 
-      <div class="info">
-        <p><strong>Área:</strong> {{ property.size / 10000 }} hectares</p>
-        <p><strong>Proprietário:</strong> {{ property.ownerId }}</p>
-        <p><strong>Atividade(s):</strong> {{ property.propertyActivities }}</p>
-      </div>
+          <div class="info">
+            <p><strong>Área:</strong> {{ property.size / 10000 }} hectares</p>
+            <p><strong>Proprietário:</strong> {{ property.ownerId }}</p>
+            <p>
+              <strong>Atividade(s):</strong> {{ property.propertyActivities }}
+            </p>
+          </div>
 
-      <div class="actions">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="entrarFazenda(property)"
-        >
-          Entrar
-        </button>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
+          <div class="actions">
+            <button
+              mat-raised-button
+              color="primary"
+              style="margin: 5px;"
+              (click)="enterProperty(property.id)"
+            >
+            <mat-icon>done</mat-icon>
+              Entrar
+            </button>
+             <button
+              mat-raised-button
+              color="accent"
+              style="margin: 5px;"
+              (click)="editProperty(property.id)"
+            >
+            <mat-icon>edit</mat-icon>
+              Editar
+            </button>            
+            
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </ng-container>
 
-  <div class="add-farm">
-    <button mat-stroked-button color="accent" (click)="cadastrarNovaFazenda()">
-      + Cadastrar Nova Fazenda
-    </button>
+    <div class="add-farm">
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="cadastrarNovaFazenda()"
+      >
+        + Cadastrar Nova Fazenda
+      </button>
+    </div>
   </div>
-</div>
-
+</main>
 <app-register-farm [isOpen]="openModalRegisterFarm" (close)="fecharModal()" />

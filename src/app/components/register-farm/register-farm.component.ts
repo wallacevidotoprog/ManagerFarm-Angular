@@ -80,7 +80,7 @@ export class RegisterFarmComponent
 
   @ViewChild('mapComp') mapComponent!: MapComponent;
   ngAfterContentInit(): void {
-    this.mapComponent.invalidateMapSize();
+    // this.mapComponent.invalidateMapSize();mapp
   }
   protected uf = ufs;
   protected statusProp = PropertyStatusList;

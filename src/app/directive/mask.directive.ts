@@ -93,7 +93,6 @@ export class MaskDirective implements ControlValueAccessor {
   private formatValue(value: string): string {
     const strValue = (value ?? '').toString(); // garante string
     const numeric = strValue.replace(/\D/g, '');
-    console.log('formatValue', strValue, numeric);
 
     switch (this.maskType) {
       case 'cpf':

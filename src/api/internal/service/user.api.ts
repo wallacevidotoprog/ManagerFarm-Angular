@@ -8,6 +8,7 @@ import {
 } from '../../../app/Models/interfaces/api.interface';
 import { environment } from '../../../environments/environment';
 import { ResponseAPI } from '../model/response.api';
+import { RespAuth } from '../../../app/@types/response-auth.types';
 
 @Injectable({ providedIn: 'root' })
 export class UserApiService {
@@ -53,9 +54,9 @@ export class UserApiService {
       );
   }
 
-  login(data: ILogin): Observable<ResponseAPI<any>> {
+  login(data: ILogin): Observable<ResponseAPI<RespAuth>> {
     return this.http
-      .post<ResponseAPI<any>>(`${environment.apiUrl}auth/login`, data, {
+      .post<ResponseAPI<RespAuth>>(`${environment.apiUrl}auth/login`, data, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -64,9 +65,9 @@ export class UserApiService {
         withCredentials: true,
       })
       .pipe(
-        map((res) => new ResponseAPI<any>(res)),
+        map((res) => new ResponseAPI<RespAuth>(res)),
         catchError((error: HttpErrorResponse) => {
-          const responseApi = new ResponseAPI<any>(error, true);
+          const responseApi = new ResponseAPI<RespAuth>(error, true);
           return of(responseApi);
         })
       );

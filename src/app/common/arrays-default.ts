@@ -1,5 +1,4 @@
-import { ListKeyView } from "../@types/default.types";
-import { FarmActivityType } from "../Models/enum/property.enum";
+import { ListKeyView } from '../@types/default.types';
 
 export const ufs = [
   'AC',
@@ -33,17 +32,24 @@ export const ufs = [
 
 export const cnhCategory = ['A', 'B', 'C', 'D', 'E'];
 
+export const CnhCategoryList: ListKeyView[] = [
+  { key: 'A', view: 'A' },
+  { key: 'B', view: 'B' },
+  { key: 'C', view: 'C' },
+  { key: 'D', view: 'D' },
+  { key: 'E', view: 'E' },
+];
+
 export const sex = ['MASCULINO', 'FEMININO', 'OUTROS'];
 
-export const PropertyStatusList = [
+export const PropertyStatusList: ListKeyView[] = [
   { key: 'NONE', view: 'Nenhum' },
   { key: 'ACTIVE', view: 'Ativa' },
   { key: 'INACTIVE', view: 'Inativa' },
   { key: 'LEASED', view: 'Arrendada' },
 ];
 
-
-export const FarmActivityTypeList : ListKeyView[] = [
+export const FarmActivityTypeList: ListKeyView[] = [
   { key: 'BOVINE_CULTURE', view: 'Pecuária bovina' },
   { key: 'MILK_PRODUCTION', view: 'Produção de leite' },
   { key: 'AGRICULTURE', view: 'Agricultura' },
@@ -59,4 +65,3 @@ export const FarmActivityTypeList : ListKeyView[] = [
   { key: 'AQUACULTURE', view: 'Aquicultura' },
   { key: 'OTHER', view: 'Outras atividades' },
 ];
-

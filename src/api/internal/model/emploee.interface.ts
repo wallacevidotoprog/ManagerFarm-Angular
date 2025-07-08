@@ -4,7 +4,7 @@ export interface IEmployee {
   name: string;
   cpf: string;
   rg: string;
-  cnh: string;
+  cnh: string[];
   category_cnh: string[];
   maturity_cnh: Date;
   admission: Date;

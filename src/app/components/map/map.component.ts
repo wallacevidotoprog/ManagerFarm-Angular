@@ -232,9 +232,6 @@ export class MapComponent implements AfterViewInit {
   });
   async ngAfterViewInit() {
     const mylocation = await this.getCurrentLocation();
-
-    console.log('mylocation', mylocation);
-
     this.map = L.map(this.mapElement.nativeElement).setView(
       [mylocation.lat, mylocation.lng],
       13

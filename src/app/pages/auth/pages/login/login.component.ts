@@ -16,6 +16,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserApiService } from '../../../../../api/internal/service/user.api';
 import { HttpStatus } from '../../../../../api/Utils/HttpStaus';
+import { Role } from '../../../../Models/enum/auth.enum';
 import { ILogin } from '../../../../Models/interfaces/api.interface';
 @Component({
   selector: 'app-login',
@@ -55,9 +56,18 @@ export class LoginComponent {
       this.service.login(payload).subscribe({
         next: (value) => {
           if (value.statusCode === HttpStatus.ACCEPTED) {
-            console.log(value);
-            this.alerts.info(`Olá ${value.data.user_name}`, 'Usuário logado');
+            this.alerts.info(
+              `Olá ${value.getData()?.user_name}`,
+              'Usuário logado'
+            );
+            localStorage.setItem('data-user', JSON.stringify(value.getData()));
+            const role = value.getData()?.role;
+            if (role === Role.OWNER || role === Role.GENERAL_MANAGER) {
+              this.router.navigate(['/manager-farm']);
+              return;
+            }
             this.router.navigate(['/dashboard']);
+
             return;
           }
           this.alerts.warning(value.getMessage());
