@@ -1,8 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ToastrService } from 'ngx-toastr';
+import { IProperty } from '../../../api/internal/model/property.interface';
+import { PropertyApiService } from '../../../api/internal/service/property.api';
+import { HttpStatus } from '../../../api/Utils/HttpStaus';
 import { RegisterFarmComponent } from '../../components/register-farm/register-farm.component';
+import { MatChip } from '@angular/material/chips';
 
 @Component({
   selector: 'app-manager-farm',
@@ -11,43 +16,44 @@ import { RegisterFarmComponent } from '../../components/register-farm/register-f
     MatExpansionModule,
     MatButtonModule,
     RegisterFarmComponent,
+    MatChip
   ],
   templateUrl: './manager-farm.component.html',
   styleUrl: './manager-farm.component.scss',
 })
-export class ManagerFarmComponent {
+export class ManagerFarmComponent implements OnInit {
+  private serviceProperty: PropertyApiService = inject(PropertyApiService);
+  private alert: ToastrService = inject(ToastrService);
 
-  fazendas = [
-    {
-      id: 1,
-      nome: 'Fazenda Boa Vista',
-      area: 120,
-      proprietario: 'João Silva',
-      localizacao: {
-        cidade: 'Uberlândia',
-        estado: 'MG',
+  protected properties: IProperty[] = [];
+
+  ngOnInit(): void {
+    this.serviceProperty.getAllProperty().subscribe({
+      next: (value) => {
+        if (value.statusCode === HttpStatus.OK) {
+
+          console.log('value.getData()',value.getData());
+          
+          this.properties = value.getData()??[]
+          return;
+        }
+        this.alert.warning(value.getMessage());
       },
-    },
-    {
-      id: 2,
-      nome: 'Fazenda Santa Luzia',
-      area: 200,
-      proprietario: 'Maria Souza',
-      localizacao: {
-        cidade: 'Ribeirão Preto',
-        estado: 'SP',
+      error: (err) => {
+        this.alert.warning(err.getMessage());
       },
-    },
-  ];
+    });
+  }
+
   openModalRegisterFarm: boolean = false;
 
   entrarFazenda(fazenda: any) {
     console.log('Entrando na fazenda:', fazenda);
     // Ex: navegar para dashboard da fazenda
   }
-fecharModal() {
-this.openModalRegisterFarm = false  ;
-}
+  fecharModal() {
+    this.openModalRegisterFarm = false;
+  }
   cadastrarNovaFazenda() {
     this.openModalRegisterFarm = true;
     console.log('Navegar para página de cadastro de fazenda');

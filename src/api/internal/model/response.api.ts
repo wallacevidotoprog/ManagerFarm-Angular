@@ -1,27 +1,32 @@
-import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { HttpResponse } from '@angular/common/http';
 
-export class ResponseAPI<T = any> {
+export class ResponseAPI<T> {
   timestamp?: string;
   data?: T;
   success?: boolean;
   path?: string;
   statusCode?: number;
   message?: string | string[];
-  messageError?: string
-  constructor(response?: HttpResponse<any> | any,error: boolean = false) {
+  messageError?: string;
+  constructor(response?: HttpResponse<any> | any, error: boolean = false) {
+    console.log('response?.body', response?.body);
+
     if (error) {
       const ne = response.error as IErroApi;
       this.timestamp = ne.timestamp;
       this.message = ne.message;
       this.messageError = response.message;
-      this.success =  ne.success;
-
-    }else if(response?.body) {
+      this.success = ne.success;
+    } else if (response?.body) {
       const ne = response as HttpResponse<any>;
-      this.data = ne.body.data;
+      if (ne?.body?.data?.data !== undefined) {
+        this.data = ne.body.data.data as T;
+      } else {
+        this.data = ne.body.data as T;
+      }
       this.timestamp = ne.body.timestamp;
       this.message = ne.body.message;
-      this.success =  ne.body.success;
+      this.success = ne.body.success;
     }
     this.statusCode = response?.status;
   }
@@ -47,9 +52,9 @@ export class ResponseAPI<T = any> {
 }
 
 export interface IErroApi {
-    success:    boolean;
-    timestamp:  string;
-    path:       string;
-    statusCode: number;
-    message:    string;
+  success: boolean;
+  timestamp: string;
+  path: string;
+  statusCode: number;
+  message: string;
 }

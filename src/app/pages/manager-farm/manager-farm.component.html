@@ -2,23 +2,37 @@
   <h2 class="title">Minhas Fazendas</h2>
 
   <mat-accordion multi>
-    <mat-expansion-panel *ngFor="let fazenda of fazendas">
+    <mat-expansion-panel *ngFor="let property of properties">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ fazenda.nome }}
+          {{ property.name }}
         </mat-panel-title>
         <mat-panel-description>
-          {{ fazenda.localizacao?.cidade }} - {{ fazenda.localizacao?.estado }}
+          {{ property.address.city }} - {{ property.address.uf }}
         </mat-panel-description>
+        <mat-chip
+          selected
+          [ngClass]="property.active ? 'pActive' : 'pInactive'"
+          style="margin-right: 10px"
+        >
+          {{ property.active ? "Ativo" : "Inativo" }}
+        </mat-chip>
       </mat-expansion-panel-header>
 
       <div class="info">
-        <p><strong>Área:</strong> {{ fazenda.area }} hectares</p>
-        <p><strong>Proprietário:</strong> {{ fazenda.proprietario }}</p>
+        <p><strong>Área:</strong> {{ property.size / 10000 }} hectares</p>
+        <p><strong>Proprietário:</strong> {{ property.ownerId }}</p>
+        <p><strong>Atividade(s):</strong> {{ property.propertyActivities }}</p>
       </div>
 
       <div class="actions">
-        <button mat-raised-button color="primary" (click)="entrarFazenda(fazenda)">Entrar</button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="entrarFazenda(property)"
+        >
+          Entrar
+        </button>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
@@ -30,8 +44,4 @@
   </div>
 </div>
 
-<app-register-farm 
-[isOpen]="openModalRegisterFarm"
-(close)="fecharModal()"
-
-/>
+<app-register-farm [isOpen]="openModalRegisterFarm" (close)="fecharModal()" />

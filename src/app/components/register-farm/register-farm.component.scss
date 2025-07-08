@@ -1,0 +1,38 @@
+.grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 10px;
+  gap: 5px;
+
+  .dec{
+     grid-template-columns: 3fr 3fr 3fr;
+  }
+
+  mat-form-field {
+    width: 100%;
+   
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+.centered-container {
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  text-align: center;
+  flex-direction: row;
+}
+::ng-deep .cdk-overlay-container {
+  z-index: 1100 !important;
+}

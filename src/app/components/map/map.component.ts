@@ -29,7 +29,7 @@ import { MapMarkers, MapPoint } from '../../@types/map-point.types';
     max-width: 100%;
   "
     >
-    <div><span>Área: {{ hectares }} </span></div>
+    
       <button mat-fab extended color="primary" (click)="toggleMarking()">
         <mat-icon>edit_location</mat-icon>
         {{ isMarkingActive ? 'Desativar marcação' : 'Ativar marcação' }}
@@ -75,13 +75,18 @@ import { MapMarkers, MapPoint } from '../../@types/map-point.types';
       style="height: 600px; margin: 20px 0; border: 1px solid #ccc; border-radius: 8px;"
     ></div>
   `,
-  styles: `.map-style-select {
+  styles: `
+  button{
+width: 200px;
+  }
+  .map-style-select {
   position: relative;
   display: inline-block;
   user-select: none;
   outline: none;
-  width: 220px;
+  width: 200px;
   font-family: Roboto, Arial, sans-serif;
+  
 }
 
 .select-button {
@@ -101,6 +106,7 @@ import { MapMarkers, MapPoint } from '../../@types/map-point.types';
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   height: 38px;
   user-select: none;
+  
 }
 
 .select-button:hover {
@@ -172,9 +178,11 @@ import { MapMarkers, MapPoint } from '../../@types/map-point.types';
   ],
 })
 export class MapComponent implements AfterViewInit {
+
   @ViewChild('map', { static: true }) mapElement!: ElementRef<HTMLDivElement>;
   protected mapPoints: MapPoint[] = [];
   public returnPoints = output<MapPoint[]>();
+  public returnSize = output<number>();
   private pointIdCounter = 0;
   private map!: L.Map;
   private markers: MapMarkers[] = [];
@@ -385,7 +393,11 @@ export class MapComponent implements AfterViewInit {
 
   onEventEmitPoints() {
   const hectares = this.getPolygonAreaInHectares();
-    this.hectares = hectares.toFixed(2);
+    // this.hectares = hectares.toFixed(2);
+
+
+  this.returnPoints.emit(this.mapPoints);
+  this.returnSize.emit(hectares);
   }
 
   public invalidateMapSize(): void {
@@ -408,6 +420,13 @@ export class MapComponent implements AfterViewInit {
     const poly = polygon(coordinates);
     const areaInSqMeters = area(poly);
 
-    return areaInSqMeters / 10000; // metros quadrados → hectares
+    return areaInSqMeters; // metros quadrados → hectares
+  }
+
+  onGetSize(){
+
+  }
+  onGetPoint(){
+
   }
 }

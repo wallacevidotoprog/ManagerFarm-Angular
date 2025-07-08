@@ -1,13 +1,10 @@
-<mat-form-field appearance="outline" class="full-width" class="input">
+<mat-form-field appearance="outline" class="full-width input">
   <mat-label>{{ label }}</mat-label>
 
   <mat-chip-grid #chipGrid aria-label="Seleção de itens">
-    <mat-chip-row
-      *ngFor="let item of value"
-      (removed)="remove(item)"
-    >
-      {{ item }}
-      <button matChipRemove [attr.aria-label]="'Remover ' + item">
+    <mat-chip-row *ngFor="let item of value" (removed)="remove(item)">
+      {{ item.view }}
+      <button matChipRemove [attr.aria-label]="'Remover ' + item.view">
         <mat-icon>cancel</mat-icon>
       </button>
     </mat-chip-row>
@@ -24,7 +21,7 @@
 
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
     <mat-option *ngFor="let option of filteredOptions" [value]="option">
-      {{ option }}
+      {{ option.view }}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

@@ -16,7 +16,7 @@ export const RoleGuard = (requiredRoles: Role[]): CanActivateFn => {
       if (value?.statusCode === HttpStatus.OK) {
         
         const hasRequiredRole = requiredRoles.some(role => 
-          value?.data?.includes(role)
+          value?.getData()?.includes(role)
         );
         
         if (hasRequiredRole) {

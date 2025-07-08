@@ -18,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { map, startWith } from 'rxjs';
+import { ListKeyView } from '../../@types/default.types';
 
 @Component({
   selector: 'app-input-chips',
@@ -46,12 +47,12 @@ import { map, startWith } from 'rxjs';
 export class InputChipsComponent implements OnInit, ControlValueAccessor {
   @Input() label: string = 'Selecionar';
   @Input() placeholder: string = 'Digite um valor...';
-  @Input() options: string[] = [];
+  @Input() options: ListKeyView[] = [];
 
   inputControl = new FormControl('');
-  filteredOptions: string[] = [];
+  filteredOptions: ListKeyView[] = [];
 
-  value: string[] = [];
+  value: ListKeyView[] = [];
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -62,12 +63,12 @@ export class InputChipsComponent implements OnInit, ControlValueAccessor {
     this.inputControl.valueChanges
       .pipe(
         startWith(''),
-        map((val) => this._filter(val??''))
+        map((val) => this._filter(val ?? ''))
       )
       .subscribe((filtered) => (this.filteredOptions = filtered));
   }
 
-  writeValue(value: string[]): void {
+  writeValue(value: ListKeyView[]): void {
     this.value = value || [];
   }
 
@@ -81,22 +82,29 @@ export class InputChipsComponent implements OnInit, ControlValueAccessor {
 
   add(event: any): void {
     const input = event.input;
-    const value = event.value?.trim();
+    const inputValue: string = event.value?.trim();
 
-    if (value && !this.value.includes(value)) {
-      this.value.push(value);
-      this.onChange(this.value);
+    if (inputValue) {
+      // Tentamos achar um objeto com view igual ao texto digitado (ignorar case)
+      const existingOption = this.options.find(
+        (opt) => opt.view.toLowerCase() === inputValue.toLowerCase()
+      );
+
+      // Se achar e não estiver no valor atual, adiciona o objeto; senão, pode criar um objeto novo com key = view (opcional)
+      if (existingOption && !this.value.find(v => v.key === existingOption.key)) {
+        this.value.push(existingOption);
+        this.onChange(this.value);
+      }
     }
 
     if (input) {
       input.value = '';
     }
-
     this.inputControl.setValue('');
   }
 
-  remove(item: string): void {
-    const index = this.value.indexOf(item);
+  remove(item: ListKeyView): void {
+    const index = this.value.findIndex(v => v.key === item.key);
     if (index >= 0) {
       this.value.splice(index, 1);
       this.onChange(this.value);
@@ -104,21 +112,21 @@ export class InputChipsComponent implements OnInit, ControlValueAccessor {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    const selectedValue = event.option.value;
+    const selectedKeyView: ListKeyView = event.option.value;
 
-    if (!this.value.includes(selectedValue)) {
-      this.value.push(selectedValue);
+    if (!this.value.find(v => v.key === selectedKeyView.key)) {
+      this.value.push(selectedKeyView);
       this.onChange(this.value);
     }
-
     this.inputControl.setValue('');
   }
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): ListKeyView[] {
     const filterValue = value.toLowerCase();
     return this.options.filter(
       (opt) =>
-        opt.toLowerCase().includes(filterValue) && !this.value.includes(opt)
+        opt.view.toLowerCase().includes(filterValue) &&
+        !this.value.find(v => v.key === opt.key)
     );
   }
 }

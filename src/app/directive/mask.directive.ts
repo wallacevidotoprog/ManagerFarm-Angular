@@ -25,6 +25,7 @@ export class MaskDirective implements ControlValueAccessor {
     | 'cnpj'
     | 'phone'
     | 'real'
+    | 'metro'
     | 'cep' = 'cpf';
 
   private onChange = (_: any) => {};
@@ -61,6 +62,10 @@ export class MaskDirective implements ControlValueAccessor {
         // formatted = this.formatREAL(numericValue);
         formatted = this.formatREAL(numericValue);
         valueToEmit = parseFloat(numericValue) / 100;
+        break;
+      case 'metro':
+        formatted = this.formatMetro(numericValue);
+        valueToEmit = parseFloat(value.replace(',', '.'));
         break;
     }
     this.el.nativeElement.value = formatted;
@@ -105,6 +110,8 @@ export class MaskDirective implements ControlValueAccessor {
         return this.formatRG(numeric);
       case 'cnh':
         return this.formatCNH(numeric);
+      case 'metro':
+        return this.formatMetro(strValue);
       default:
         return value;
     }
@@ -147,5 +154,18 @@ export class MaskDirective implements ControlValueAccessor {
   }
   private formatCEP(value: string): string {
     return value.replace(/^(\d{5})(\d{0,3})/, '$1-$2').slice(0, 9);
+  }
+  private formatMetro(value: string): string {
+    const clean = value.replace(/[^\d.,]/g, '').replace(',', '.');
+    const num = parseFloat(clean);
+
+    if (isNaN(num)) return '';
+
+    const formatted = num.toLocaleString('pt-BR', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 5,
+    });
+
+    return `${formatted} m²`;
   }
 }

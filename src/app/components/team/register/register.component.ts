@@ -32,6 +32,9 @@ import { EmploeeApiService } from '../../../../api/internal/service/emploee.api'
 import { HttpStatus } from '../../../../api/Utils/HttpStaus';
 import { cnhCategory, sex, ufs } from '../../../common/arrays-default';
 import { InputChipsComponent } from '../../input-chips/input-chips.component';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { FarmActivityType } from '../../../Models/enum/property.enum';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-register-team',
   standalone: true,
@@ -69,6 +72,8 @@ export class RegisterComponent {
   private cepService: CepService = inject(CepService);
   private alert: ToastrService = inject(ToastrService);
 
+  
+  
   protected isLoadApi = false;
   protected cnhCategory = cnhCategory;
   protected sex = sex;
@@ -167,4 +172,6 @@ teste(){
       });
     }
   }
+
+  
 }
