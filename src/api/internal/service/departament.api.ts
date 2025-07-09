@@ -7,8 +7,9 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IDepartament } from '../model/departament.interface';
-import { ResponseEmployee } from '../model/emploee.interface';
 import { ResponseAPI } from '../model/response.api';
+import { ResponseWhere } from '../model/ResponseWhere';
+import { IEmployee } from '../model/emploee.interface';
 
 @Injectable({ providedIn: 'root' })
 export class DepartamentApiService {
@@ -35,23 +36,23 @@ export class DepartamentApiService {
       );
   }
 
-  getEmployee(params: HttpParams): Observable<ResponseAPI<ResponseEmployee>> {
+  getEmployee(params: HttpParams): Observable<ResponseAPI<ResponseWhere<IEmployee[]>>> {
     return this.http
-      .get<ResponseAPI<ResponseEmployee>>(
-        `${environment.apiUrl}employee?${params}`,        
+      .get<ResponseAPI<ResponseWhere<IEmployee[]>>>(
+        `${environment.apiUrl}employee?${params}`,
         {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           observe: 'response',
-          withCredentials:true,
+          withCredentials: true,
         }
       )
       .pipe(
-        map((res) => new ResponseAPI<ResponseEmployee>(res)),
+        map((res) => new ResponseAPI<ResponseWhere<IEmployee[]>>(res)),
         catchError((error: HttpErrorResponse) => {
-          const responseApi = new ResponseAPI<ResponseEmployee>(error, true);
+          const responseApi = new ResponseAPI<ResponseWhere<IEmployee[]>>(error, true);
           return of(responseApi);
         })
       );

@@ -17,9 +17,16 @@ export class ResponseAPI<T> {
       this.success = ne.success;
     } else if (response?.body) {
       const ne = response as HttpResponse<any>;
-      if (ne?.body?.data?.data !== undefined) {
+      console.log('ne',ne);
+      
+      if (ne?.body?.data?.result !== undefined) {
+        this.data = ne.body.data.result as T;
+         console.log(' entro = > if (ne?.body?.data?.result !== undefined)');
+      } else if (ne?.body?.data?.data !== undefined) {
         this.data = ne.body.data.data as T;
+        console.log(' entro = > } else if (ne?.body?.data?.data !== undefined) {');
       } else {
+        console.log(' entro = > else');
         this.data = ne.body.data as T;
       }
       this.timestamp = ne.body.timestamp;

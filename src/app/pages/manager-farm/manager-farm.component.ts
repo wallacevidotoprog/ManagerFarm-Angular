@@ -34,7 +34,7 @@ export class ManagerFarmComponent {
   properties$ = this.refresh$.pipe(
     startWith(void 0),
     switchMap(() =>
-      this.serviceProperty.getAllProperty().pipe(map((resp) => resp.data))
+      this.serviceProperty.getAllProperty().pipe(map((resp) => resp.getData()?.data))
     )
   );
   openModalRegisterFarm: boolean = false;

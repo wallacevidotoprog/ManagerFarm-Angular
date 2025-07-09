@@ -22,7 +22,6 @@ import {
   IFunctionsList,
 } from '../../../../api/internal/model/departament.interface';
 import { MaskDirective } from '../../../directive/mask.directive';
-
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ToastrService } from 'ngx-toastr';
@@ -86,8 +85,8 @@ export class RegisterComponent {
     name: ['', Validators.required],
     cpf: ['', Validators.required],
     rg: [''],
-    cnh: [this.fb.control<ListKeyView[]>([], Validators.required)],
-    category_cnh: [''],
+    cnh: [''],
+    category_cnh: this.fb.control<ListKeyView[]>([]),
     maturity_cnh: [''],
     email: ['', [Validators.required, Validators.email]],
     phone: [''],
@@ -110,11 +109,7 @@ export class RegisterComponent {
     city: ['', Validators.required],
     uf: ['', [Validators.required, Validators.maxLength(2)]],
   });
-teste(){
-  console.log('this.formAdm: ',this.formAdm.value);
-  console.log('this.formAdm -  Format : ', parseFloat(this.formAdm.value.salary ?? '0') / 100);
-  
-}
+
   async onSubmit(stepper: MatStepper): Promise<void> {
     if (
       this.formEmploee.valid &&
@@ -124,7 +119,7 @@ teste(){
       const payload: IEmployee = {
         ...this.formEmploee.value,
         ...this.formAdm.value,
-        cnh: this.formEmploee.value.cnh?.map((v: { key: any; }) => v.key),
+        category_cnh: this.formEmploee.value.category_cnh?.map((v: { key: any; }) => v.key),
         salary: (parseFloat(this.formAdm.value.salary ?? '0') / 100),
         address: {
           ...this.formAddress.value,

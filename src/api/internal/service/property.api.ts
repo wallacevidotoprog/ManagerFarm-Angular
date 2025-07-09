@@ -4,14 +4,15 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IProperty } from '../model/property.interface';
 import { ResponseAPI } from '../model/response.api';
+import { ResponseWhere } from '../model/ResponseWhere';
 
 @Injectable({ providedIn: 'root' })
 export class PropertyApiService {
   private http = inject(HttpClient);
 
-  getAllProperty(): Observable<ResponseAPI<IProperty[]>> {
+  getAllProperty(): Observable<ResponseAPI<ResponseWhere<IProperty[]>>> {
     return this.http
-      .get<ResponseAPI<IProperty[]>>(`${environment.apiUrl}property`, {
+      .get<ResponseAPI<ResponseWhere<IProperty[]>>>(`${environment.apiUrl}property`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -20,9 +21,9 @@ export class PropertyApiService {
         withCredentials: true,
       })
       .pipe(
-        map((res) => new ResponseAPI<IProperty[]>(res)),
+        map((res) => new ResponseAPI<ResponseWhere<IProperty[]>>(res)),
         catchError((error: HttpErrorResponse) => {
-          const responseApi = new ResponseAPI<IProperty[]>(error, true);
+          const responseApi = new ResponseAPI<ResponseWhere<IProperty[]>>(error, true);
           return of(responseApi);
         })
       );

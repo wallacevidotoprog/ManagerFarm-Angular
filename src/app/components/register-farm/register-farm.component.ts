@@ -19,9 +19,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { ToastrService } from 'ngx-toastr';
 import { CepService } from '../../../api/external/services/cep.service';
 import { IProperty } from '../../../api/internal/model/property.interface';
 import { PropertyApiService } from '../../../api/internal/service/property.api';
+import { HttpStatus } from '../../../api/Utils/HttpStaus';
 import { ListKeyView } from '../../@types/default.types';
 import { MapPoint } from '../../@types/map-point.types';
 import {
@@ -37,8 +39,6 @@ import {
 } from '../../shared/components/base-modal/base-modal.component';
 import { InputChipsComponent } from '../input-chips/input-chips.component';
 import { MapComponent } from '../map/map.component';
-import { ToastrService } from 'ngx-toastr';
-import { HttpStatus } from '../../../api/Utils/HttpStaus';
 
 @Component({
   selector: 'app-register-farm',
@@ -149,15 +149,6 @@ export class RegisterFarmComponent
   }
 
   async onSubmit(_t217: MatStepper) {
-    const payload = {
-      ...this.formProperty.value,
-
-      ...this.formAddress.value,
-      ...this.formPoints.value,
-    };
-
-    console.log(payload);
-
     if (
       this.formProperty.valid &&
       this.formAddress.valid &&
@@ -174,26 +165,25 @@ export class RegisterFarmComponent
         },
       } as IProperty;
 
-      this.serviceProperty
-        .registerNew(payload)
-        .subscribe({
-          next: (value) => {
-            if (value.statusCode === HttpStatus.CREATED) {
-              this.alert.success(
-                `Fazenda: ${this.formProperty.value.name} registrado`
-              );
-              this.formProperty.reset();
-              this.formPoints.reset();
-              this.formAddress.reset();
-              this.close.emit();
-              return;
-            }
-
-            this.alert.warning(value.getMessage());
-          }, error: (err) => {
-            this.alert.warning(err.getMessage());
+      this.serviceProperty.registerNew(payload).subscribe({
+        next: (value) => {
+          if (value.statusCode === HttpStatus.CREATED) {
+            this.alert.success(
+              `Fazenda: ${this.formProperty.value.name} registrado`
+            );
+            this.formProperty.reset();
+            this.formPoints.reset();
+            this.formAddress.reset();
+            this.close.emit();
+            return;
           }
-        });
+
+          this.alert.warning(value.getMessage());
+        },
+        error: (err) => {
+          this.alert.warning(err.getMessage());
+        },
+      });
     }
   }
 }
