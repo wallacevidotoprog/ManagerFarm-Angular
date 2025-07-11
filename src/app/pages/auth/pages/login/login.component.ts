@@ -18,6 +18,7 @@ import { UserApiService } from '../../../../../api/internal/service/user.api';
 import { HttpStatus } from '../../../../../api/Utils/HttpStaus';
 import { Role } from '../../../../Models/enum/auth.enum';
 import { ILogin } from '../../../../Models/interfaces/api.interface';
+import { localStorageData } from '../../../../../api/Utils/hasLocal';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -60,7 +61,7 @@ export class LoginComponent {
               `Olá ${value.getData()?.user_name}`,
               'Usuário logado'
             );
-            localStorage.setItem('data-user', JSON.stringify(value.getData()));
+            localStorage.setItem(localStorageData.DATA_USER, JSON.stringify(value.getData()));
             const role = value.getData()?.role;
             if (role === Role.OWNER || role === Role.GENERAL_MANAGER) {
               this.router.navigate(['/manager-farm']);

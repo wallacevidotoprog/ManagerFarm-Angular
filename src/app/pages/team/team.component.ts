@@ -24,7 +24,7 @@ import { Employees } from '../../../api/internal/model/emploee.interface';
 import { DepartamentApiService } from '../../../api/internal/service/departament.api';
 import { HttpStatus } from '../../../api/Utils/HttpStaus';
 import { RegisterComponent } from '../../components/team/register/register.component';
-import { GenericTableComponent } from '../../shared/components/generic-table/generic-table.component';
+import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 
 @Component({
   selector: 'app-team',
@@ -46,7 +46,6 @@ import { GenericTableComponent } from '../../shared/components/generic-table/gen
     MatListModule,
     MatDialogModule,
     RegisterComponent,
-    MatPaginator,
     MatTooltipModule,
     GenericTableComponent,
   ],

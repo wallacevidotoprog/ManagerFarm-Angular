@@ -1,0 +1,92 @@
+<app-base-modal [isOpen]="isOpen" (closeModal)="close.emit()">
+  <mat-card>
+    <form [formGroup]="bovineForm" (ngSubmit)="onSubmit()">
+      <mat-tab-group>
+        <mat-tab label="Dados">
+          <mat-form-field appearance="outline">
+            <mat-label>Número do brinco</mat-label>
+            <input matInput formControlName="name" required />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="tagNumber" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Sexo</mat-label>
+            <mat-select formControlName="sex">
+              <mat-option *ngFor="let s of sexes" [value]="s">{{
+                s
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Data de Nascimento</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="birthDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </mat-tab>
+        <mat-tab label="Geneologia">
+          <mat-form-field appearance="outline">
+            <mat-label>Pai</mat-label>
+            <mat-select formControlName="fatherId">
+              <!-- <mat-option *ngFor="let b of bovines$ | async" [value]="b.id">{{ b.name }}</mat-option> -->
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Mãe</mat-label>
+            <mat-select formControlName="motherId">
+              <!-- <mat-option *ngFor="let b of bovines$ | async" [value]="b.id">{{ b.name }}</mat-option> -->
+            </mat-select>
+          </mat-form-field>
+        </mat-tab>
+        <mat-tab label="Outros">
+          <mat-form-field appearance="outline">
+            <mat-label>Situação</mat-label>
+            <input matInput formControlName="situation" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Modalidade</mat-label>
+            <input matInput formControlName="modality" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fase de Corte</mat-label>
+            <input matInput formControlName="phaseCut" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fase de Leite</mat-label>
+            <input matInput formControlName="phaseMilk" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Área</mat-label>
+            <mat-select formControlName="arealId">
+              <!-- <mat-option *ngFor="let a of areas$ | async" [value]="a.id">{{ a.name }}</mat-option> -->
+            </mat-select>
+          </mat-form-field>
+        </mat-tab>
+      </mat-tab-group>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="bovineForm.invalid"
+      >
+        Salvar
+      </button>
+    </form>
+  </mat-card>
+</app-base-modal>

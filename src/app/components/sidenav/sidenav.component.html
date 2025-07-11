@@ -1,7 +1,7 @@
 <!-- Menu topo -->
 <mat-toolbar color="primary" class="navbar">
-  <span class="logo">Minha Fazenda</span>
-
+  <img src="/assets/logo.png" alt=""logo style="width: 50px;">
+  <span class="logo">{{property.name}}</span>
   <span class="spacer"></span>
 
   <!-- Botão de menu (visível só no mobile) -->
@@ -11,8 +11,10 @@
 
   <!-- Navegação padrão (visível no desktop) -->
   <nav class="desktop-menu">
-    <button mat-button routerLink="/controls/team">
-      <mat-icon>people</mat-icon>
+
+
+    <button *ngIf="hasRole([Role.ADMIN,Role.MANAGER,Role.GENERAL_MANAGER,Role.OWNER])" mat-button routerLink="/controls/team">
+      <mat-icon>people</mat-icon>      
       Equipe
     </button>
 

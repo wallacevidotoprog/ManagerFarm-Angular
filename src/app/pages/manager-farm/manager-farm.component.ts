@@ -10,6 +10,8 @@ import { map, startWith, Subject, switchMap } from 'rxjs';
 import { PropertyApiService } from '../../../api/internal/service/property.api';
 import { HttpStatus } from '../../../api/Utils/HttpStaus';
 import { RegisterFarmComponent } from '../../components/register-farm/register-farm.component';
+import { IProperty } from '../../../api/internal/model/property.interface';
+import { localStorageData } from '../../../api/Utils/hasLocal';
 
 @Component({
   selector: 'app-manager-farm',
@@ -39,12 +41,12 @@ export class ManagerFarmComponent {
   );
   openModalRegisterFarm: boolean = false;
 
-  enterProperty(id?: string) {
-    if (id) {
-      this.serviceProperty.setProperty(id).subscribe({
+  enterProperty(property:IProperty) {
+    if (property.id) {
+      this.serviceProperty.setProperty(property.id).subscribe({
         next: (value) => {
           if (value.statusCode === HttpStatus.ACCEPTED) {
-            // localStorage.setItem('data-user', JSON.stringify(value.getData()));
+            localStorage.setItem(localStorageData.PROPERTY, JSON.stringify(property));
             this.router.navigate(['/dashboard']);
 
             return;

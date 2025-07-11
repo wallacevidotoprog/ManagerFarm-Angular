@@ -36,7 +36,7 @@ import { MaskDirective } from '../../directive/mask.directive';
 import {
   BaseModalComponent,
   ModalBase,
-} from '../../shared/components/base-modal/base-modal.component';
+} from '../base-modal/base-modal.component';
 import { InputChipsComponent } from '../input-chips/input-chips.component';
 import { MapComponent } from '../map/map.component';
 
